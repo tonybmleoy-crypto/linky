@@ -3,7 +3,8 @@ import type { Settings } from '@shared/model'
 import { useApp } from '../shared/store'
 import { acceleratorFromEvent, prettyHotkey } from '../shared/format'
 import { useT } from '../shared/i18n'
-import { Segmented, Switch, cx } from '../shared/ui'
+import { MOD, isMac } from '../shared/platform'
+import { Button, Segmented, Switch, cx } from '../shared/ui'
 import pkg from '../../../package.json'
 
 export function SettingsView() {
@@ -51,7 +52,8 @@ export function SettingsView() {
       </Group>
 
       <Group title={t('set.pasting')}>
-        <Row label={t('set.pasteMode')} hint={t('set.pasteModeHint')}>
+        {isMac && <PermissionRow />}
+        <Row label={t('set.pasteMode')} hint={t('set.pasteModeHint', { mod: MOD })}>
           <Segmented
             value={settings.pasteMode}
             onChange={(pasteMode) => set({ pasteMode })}
@@ -86,6 +88,35 @@ export function SettingsView() {
       </p>
     </div>
   )
+}
+
+/** macOS only: Accessibility permission, needed to press ⌘V in other apps. */
+export function PermissionRow() {
+  const t = useT()
+  const allowed = usePastePermission()
+  return (
+    <Row label={t('perm.title')} hint={allowed ? t('perm.granted') : t('perm.needed')}>
+      {allowed ? (
+        <span className="t-body-s font-medium text-success">✓</span>
+      ) : (
+        <Button size="s" onClick={() => void window.linky.requestPastePermission()}>
+          {t('perm.allow')}
+        </Button>
+      )}
+    </Row>
+  )
+}
+
+/** Re-checks when the window regains focus — i.e. after the user comes back from System Settings. */
+export function usePastePermission(): boolean {
+  const [allowed, setAllowed] = useState(true)
+  useEffect(() => {
+    const check = (): void => void window.linky.hasPastePermission().then(setAllowed)
+    check()
+    window.addEventListener('focus', check)
+    return () => window.removeEventListener('focus', check)
+  }, [])
+  return allowed
 }
 
 function Group({ title, children }: { title: string; children: ReactNode }) {

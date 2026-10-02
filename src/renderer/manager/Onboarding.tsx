@@ -3,6 +3,8 @@ import { ArrowRight, Check } from 'lucide-react'
 import { useApp } from '../shared/store'
 import { prettyHotkey } from '../shared/format'
 import { useT } from '../shared/i18n'
+import { MOD, isMac } from '../shared/platform'
+import { usePastePermission } from './Settings'
 import { Button, Keycap, SnippetTile, cx } from '../shared/ui'
 
 const STEPS = 3
@@ -70,11 +72,12 @@ function TryIt() {
   const [pressed, setPressed] = useState<Set<string>>(new Set())
   const contents = useMemo(() => library!.snippets.map((s) => s.content), [library])
   const success = contents.some((c) => value.includes(c))
+  const allowed = usePastePermission()
 
   // Light up the keycaps while the user holds them.
   useEffect(() => {
     const names = (e: KeyboardEvent): string[] =>
-      [e.ctrlKey && 'Ctrl', e.altKey && 'Alt', e.shiftKey && 'Shift', e.metaKey && 'Win', /^Key[A-Z]$/.test(e.code) && e.code.slice(3)].filter(Boolean) as string[]
+      [e.ctrlKey && (isMac ? '⌃' : 'Ctrl'), e.altKey && (isMac ? '⌥' : 'Alt'), e.shiftKey && (isMac ? '⇧' : 'Shift'), e.metaKey && (isMac ? '⌘' : 'Win'), /^Key[A-Z]$/.test(e.code) && e.code.slice(3)].filter(Boolean) as string[]
     const down = (e: KeyboardEvent): void => setPressed(new Set(names(e)))
     const up = (): void => setPressed(new Set())
     window.addEventListener('keydown', down)
@@ -117,7 +120,16 @@ function TryIt() {
           {success ? <Check size={16} strokeWidth={2.25} /> : <ArrowRight size={16} strokeWidth={1.75} />}
         </span>
       </div>
-      <p className="t-caption mt-3.5 text-fg-3">{t('onb.tryHint')}</p>
+      {isMac && !allowed ? (
+        <div className="mt-4 flex max-w-[500px] items-center gap-3 text-left">
+          <p className="t-caption flex-1 text-fg-2">{t('perm.needed')}</p>
+          <Button size="s" onClick={() => void window.linky.requestPastePermission()}>
+            {t('perm.allow')}
+          </Button>
+        </div>
+      ) : (
+        <p className="t-caption mt-3.5 text-fg-3">{t('onb.tryHint')}</p>
+      )}
     </>
   )
 }
@@ -128,7 +140,7 @@ function AllSet() {
   const tips: Array<[string, string]> = [
     ['1 – 9', t('onb.trick1')],
     ['Tab', t('onb.trick2')],
-    ['Ctrl N', t('onb.trick3')]
+    [`${MOD} N`, t('onb.trick3')]
   ]
   return (
     <>

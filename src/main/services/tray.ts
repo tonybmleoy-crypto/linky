@@ -13,7 +13,8 @@ export function createTray(
   actions: TrayActions,
   labels: () => { hotkey: string; t: Translate }
 ): { tray: Tray; refresh: () => void } {
-  const image = nativeImage.createFromPath(resourcePath('tray.png'))
+  // macOS wants a monochrome "template" image it can tint for light/dark menu bars.
+  const image = nativeImage.createFromPath(resourcePath(process.platform === 'darwin' ? 'trayTemplate.png' : 'tray.png'))
   const tray = new Tray(image)
   tray.setToolTip('Linky')
   const rebuild = (): void => {
@@ -30,7 +31,8 @@ export function createTray(
     )
   }
   rebuild()
-  tray.on('click', actions.openManager)
+  // On macOS a click opens the menu (the platform convention); on Windows it opens the window.
+  if (process.platform !== 'darwin') tray.on('click', actions.openManager)
   return { tray, refresh: rebuild }
 }
 

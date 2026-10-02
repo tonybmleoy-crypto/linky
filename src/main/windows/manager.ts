@@ -1,4 +1,4 @@
-import { BrowserWindow, screen, shell, type Rectangle } from 'electron'
+import { BrowserWindow, app, nativeTheme, screen, shell, type Rectangle } from 'electron'
 import { IPC, type ManagerRoute, type ResizeEdge, type WindowAction } from '@shared/api'
 import { preloadPath, resourcePath } from '../paths'
 import { loadPage } from './load'
@@ -22,6 +22,7 @@ export class ManagerWindow {
       this.win.focus()
       return
     }
+    const mac = process.platform === 'darwin'
     const win = new BrowserWindow({
       width: 1200,
       height: 780,
@@ -30,10 +31,14 @@ export class ManagerWindow {
       show: false,
       title: 'Linky',
       icon: resourcePath('icon.png'),
-      frame: false,
-      transparent: true,
-      backgroundColor: '#00000000',
-      hasShadow: false,
+      ...(mac
+        ? {
+            // macOS already draws rounded corners and a shadow; keep the traffic lights.
+            titleBarStyle: 'hiddenInset' as const,
+            trafficLightPosition: { x: 20, y: 18 },
+            backgroundColor: nativeTheme.shouldUseDarkColors ? '#0E0E10' : '#ECECEF'
+          }
+        : { frame: false, transparent: true, backgroundColor: '#00000000', hasShadow: false }),
       webPreferences: {
         preload: preloadPath(),
         sandbox: true,
@@ -41,9 +46,11 @@ export class ManagerWindow {
       }
     })
     win.once('ready-to-show', () => win.show())
+    if (mac) void app.dock?.show()
     win.on('closed', () => {
       this.stopResize()
       this.win = null
+      if (mac) app.dock?.hide()
     })
     const sendState = (): void => win.webContents.send(IPC.windowState, { maximized: win.isMaximized() })
     win.on('maximize', sendState)

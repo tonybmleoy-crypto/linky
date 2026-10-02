@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { Check, ChevronDown, ExternalLink, Trash, X } from 'lucide-react'
+import { Check, ExternalLink, Trash, X } from 'lucide-react'
 import { detectKind, type Snippet } from '@shared/model'
 import { useApp } from '../shared/store'
 import { elapsedShort, relativeTime, shortDate } from '../shared/format'
 import { useLang, useT } from '../shared/i18n'
+import { Select } from '../shared/Select'
+import { MOD, modPressed } from '../shared/platform'
 import { Button, FieldLabel, IconButton, Kbd, SnippetTile, Switch, folderDot, inputClass } from '../shared/ui'
 
 /** Right-hand panel: edits an existing snippet (autosave) or creates a new one. */
@@ -83,7 +85,7 @@ export function Inspector({
     <aside
       className="flex w-[340px] shrink-0 flex-col gap-4 overflow-y-auto bg-sunken px-[22px] pt-6 pb-5"
       onKeyDown={(e) => {
-        if (isNew && e.ctrlKey && e.key === 'Enter') void create()
+        if (isNew && modPressed(e) && e.key === 'Enter') void create()
         if (e.key === 'Escape') onClose()
       }}
     >
@@ -124,27 +126,19 @@ export function Inspector({
         {!content.trim() && !isNew && <span className="t-caption mt-1 block text-danger">{t('ins.emptyError')}</span>}
       </label>
 
-      <label>
+      <div>
         <FieldLabel>{t('ins.folder')}</FieldLabel>
-        <div className={`${inputClass} relative flex items-center gap-2.5`}>
-          <span className="size-2 rounded-full" style={{ background: folder ? folderDot[folder.color] : 'var(--border-subtle)' }} />
-          <span className="flex-1">{folder?.name ?? t('ins.noFolder')}</span>
-          <ChevronDown size={15} strokeWidth={1.75} className="text-fg-3" />
-          <select
-            value={folderId ?? ''}
-            onChange={(e) => void patchNow({ folderId: e.target.value || null })}
-            className="absolute inset-0 opacity-0"
-            aria-label={t('ins.folder')}
-          >
-            <option value="">{t('ins.noFolder')}</option>
-            {folders.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </label>
+        <Select
+          variant="field"
+          label={t('ins.folder')}
+          value={folderId ?? ''}
+          onChange={(v) => void patchNow({ folderId: v || null })}
+          options={[
+            { value: '', label: t('ins.noFolder'), leading: <Dot color="var(--border-subtle)" /> },
+            ...folders.map((f) => ({ value: f.id, label: f.name, leading: <Dot color={folderDot[f.color]} /> }))
+          ]}
+        />
+      </div>
 
       <div className="rounded-xl bg-surface">
         <div className="flex items-center gap-4 px-4 py-3">
@@ -177,7 +171,7 @@ export function Inspector({
 
       {isNew ? (
         <div className="flex items-center justify-between">
-          <span className="t-caption text-fg-3">{t('ins.saveHint')}</span>
+          <span className="t-caption text-fg-3">{t('ins.saveHint', { mod: MOD })}</span>
           <Button onClick={() => void create()} disabled={!content.trim()}>
             {t('ins.save')}
           </Button>
@@ -209,4 +203,8 @@ function Stat({ value, label }: { value: string; label: string }) {
       <div className="t-caption text-fg-3">{label}</div>
     </div>
   )
+}
+
+function Dot({ color }: { color: string }) {
+  return <span className="size-2 shrink-0 rounded-full" style={{ background: color }} />
 }

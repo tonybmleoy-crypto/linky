@@ -53,6 +53,10 @@ export interface LinkyApi {
   openManager(route?: ManagerRoute): Promise<void>
   openExternal(url: string): Promise<void>
 
+  /** macOS: whether Linky may send ⌘V to other apps (Accessibility). True on Windows. */
+  hasPastePermission(): Promise<boolean>
+  requestPastePermission(): Promise<void>
+
   windowControl(action: WindowAction): Promise<void>
   /** Starts resizing the manager window from an edge; `null` stops. */
   resizeWindow(edge: ResizeEdge | null): Promise<void>
@@ -81,6 +85,8 @@ export const IPC = {
   hidePalette: 'palette:hide',
   openManager: 'app:openManager',
   openExternal: 'app:openExternal',
+  hasPastePermission: 'permission:get',
+  requestPastePermission: 'permission:request',
   windowControl: 'window:control',
   resizeWindow: 'window:resize',
   windowState: 'window:state',

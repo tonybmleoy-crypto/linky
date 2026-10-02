@@ -12,6 +12,7 @@
   --color-selected: var(--bg-selected);
   --color-raised: var(--bg-raised);
   --color-track: var(--bg-track);
+  --color-popover: var(--bg-popover);
   --color-line: var(--border-subtle);
   --color-line-strong: var(--border-strong);
   --color-fg: var(--text-primary);

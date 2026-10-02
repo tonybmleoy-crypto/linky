@@ -41,6 +41,7 @@ export class PaletteWindow {
       skipTaskbar: true,
       hasShadow: false,
       alwaysOnTop: true,
+      ...(process.platform === 'darwin' ? { type: 'panel' as const } : {}),
       webPreferences: {
         preload: preloadPath(),
         sandbox: true,
@@ -49,7 +50,7 @@ export class PaletteWindow {
       }
     })
     this.win.setAlwaysOnTop(true, 'pop-up-menu')
-    this.win.setVisibleOnAllWorkspaces(true)
+    this.win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true })
     // Clicking anywhere else dismisses it, like a menu.
     this.win.on('blur', () => {
       if (Date.now() - this.shownAt < 150) return

@@ -1,0 +1,78 @@
+# Packaging for Windows (NSIS installer) and macOS (dmg + zip).
+# Windows builds locally: `npm run build:win`. macOS must be built on a Mac — see .github/workflows/release.yml.
+appId: com.linky.app
+productName: Linky
+copyright: Copyright © 2026 Tony
+
+directories:
+  output: dist
+  buildResources: resources
+
+files:
+  - out/**
+  - package.json
+# Only the UI languages Linky ships (saves ~45 MB of Chromium locales).
+electronLanguages: [en-US, ru]
+
+# koffi loads a native .node file at runtime, which can't be read from inside app.asar.
+asarUnpack:
+  - '**/node_modules/koffi/**'
+  - '**/node_modules/@koromix/**'
+# Tray icons are loaded from process.resourcesPath (see src/main/paths.ts).
+extraResources:
+  - from: resources
+    to: .
+    filter:
+      - icon.png
+      - tray.png
+      - tray@2x.png
+      - trayTemplate.png
+      - trayTemplate@2x.png
+
+win:
+  icon: resources/icon.ico
+  target:
+    - target: nsis
+      arch: [x64]
+  artifactName: Linky-Setup-${version}.${ext}
+
+nsis:
+  # One click, per user, no admin rights — like most modern desktop apps.
+  oneClick: true
+  perMachine: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Linky
+  runAfterFinish: true
+  deleteAppDataOnUninstall: false
+  installerIcon: resources/icon.ico
+  uninstallerIcon: resources/icon.ico
+  multiLanguageInstaller: true
+  installerLanguages: [en_US, ru_RU]
+
+mac:
+  icon: resources/icon-mac.png
+  category: public.app-category.productivity
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+    - target: zip
+      arch: [arm64, x64]
+  artifactName: Linky-${version}-${arch}.${ext}
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: resources/entitlements.mac.plist
+  entitlementsInherit: resources/entitlements.mac.plist
+  extendInfo:
+    # Menu-bar app: no Dock icon until the Linky window is opened (see src/main/windows/manager.ts).
+    LSUIElement: true
+
+dmg:
+  title: Linky ${version}
+  contents:
+    - x: 140
+      y: 190
+    - x: 400
+      y: 190
+      type: link
+      path: /Applications

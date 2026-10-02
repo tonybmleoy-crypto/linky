@@ -6,6 +6,7 @@ import { searchSnippets } from '@shared/ranking'
 import { useApp } from '../shared/store'
 import { prettyHotkey } from '../shared/format'
 import { useT } from '../shared/i18n'
+import { MOD, modPressed } from '../shared/platform'
 import { Chip, IconButton, Kbd, NumberBadge, SnippetTile, Toast, cx } from '../shared/ui'
 
 const MAX_RESULTS = 50
@@ -88,10 +89,10 @@ export function Palette() {
     } else if (e.key === 'Tab') {
       e.preventDefault()
       cycleFolder(e.shiftKey ? -1 : 1)
-    } else if (e.ctrlKey && e.code === 'KeyN') {
+    } else if (modPressed(e) && e.code === 'KeyN') {
       e.preventDefault()
       void saveFromClipboard()
-    } else if (/^[1-9]$/.test(e.key) && !query && !e.ctrlKey && !e.altKey) {
+    } else if (/^[1-9]$/.test(e.key) && !query && !e.ctrlKey && !e.metaKey && !e.altKey) {
       // Quick keys work while the search box is empty.
       e.preventDefault()
       void paste(results[Number(e.key) - 1])
@@ -177,7 +178,7 @@ export function Palette() {
             className="t-caption flex items-center gap-2 rounded-full font-medium text-fg-2 hover:text-fg"
           >
             <Plus size={14} strokeWidth={1.75} /> {t('pal.saveClipboard')}
-            <span className="text-fg-3">Ctrl N</span>
+            <span className="text-fg-3">{MOD} N</span>
           </button>
           <span className="t-caption text-fg-3">{t('pal.hints')}</span>
         </div>

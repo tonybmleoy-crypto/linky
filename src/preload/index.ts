@@ -30,6 +30,8 @@ const api: LinkyApi = {
   hidePalette: () => invoke(IPC.hidePalette),
   openManager: (route) => invoke(IPC.openManager, route),
   openExternal: (url) => invoke(IPC.openExternal, url),
+  hasPastePermission: () => invoke(IPC.hasPastePermission),
+  requestPastePermission: () => invoke(IPC.requestPastePermission),
   windowControl: (action) => invoke(IPC.windowControl, action),
   resizeWindow: (edge) => invoke(IPC.resizeWindow, edge),
   onWindowState: listen(IPC.windowState),

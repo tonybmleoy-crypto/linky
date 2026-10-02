@@ -41,6 +41,7 @@ export function createWin32Input(): PlatformInput {
 
   return {
     canPaste: true,
+    focusDelayMs: 60,
 
     captureTarget: () => GetForegroundWindow() ?? null,
 

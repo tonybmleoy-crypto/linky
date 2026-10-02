@@ -1,10 +1,13 @@
 import type { Lang, Translate } from '@shared/i18n'
+import { isMac } from './platform'
 
+const MAC_KEYS: Record<string, string> = { Control: '⌃', Alt: '⌥', Option: '⌥', Shift: '⇧', Super: '⌘', Meta: '⌘', Command: '⌘', Cmd: '⌘' }
+
+/** "Control+Alt+V" → ["Ctrl", "Alt", "V"] on Windows, ["⌃", "⌥", "V"] on macOS. */
 export function prettyHotkey(acc: string): string[] {
-  return acc
-    .replace(/CommandOrControl|CmdOrCtrl|Control/g, 'Ctrl')
-    .replace(/Super|Meta/g, 'Win')
-    .split('+')
+  const parts = acc.replace(/CommandOrControl|CmdOrCtrl/g, isMac ? 'Command' : 'Control').split('+')
+  if (isMac) return parts.map((p) => MAC_KEYS[p] ?? p)
+  return parts.map((p) => (p === 'Control' ? 'Ctrl' : p === 'Super' || p === 'Meta' ? 'Win' : p))
 }
 
 export function relativeTime(ts: number | null, t: Translate, lang: Lang, now = Date.now()): string {

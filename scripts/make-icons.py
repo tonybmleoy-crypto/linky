@@ -37,13 +37,27 @@ def app_icon(size: int) -> Image.Image:
     return base
 
 
+def mac_icon(size: int) -> Image.Image:
+    """macOS icon grid: the artwork sits inside ~80% of the canvas so it matches other Dock icons."""
+    canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    inner = app_icon(int(size * 0.8))
+    off = (size - inner.width) // 2
+    canvas.alpha_composite(inner, (off, off))
+    return canvas
+
+
 def main() -> None:
     OUT.mkdir(exist_ok=True)
-    app_icon(512).save(OUT / "icon.png")
+    app_icon(1024).save(OUT / "icon.png")
     app_icon(256).save(OUT / "icon.ico", sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)])
-    # Tray: the same mark, small. Windows picks tray@2x.png on high-DPI screens.
+    # electron-builder turns this into icon.icns.
+    mac_icon(1024).save(OUT / "icon-mac.png")
+    # Windows tray: the full-color mark. Windows picks tray@2x.png on high-DPI screens.
     app_icon(16).save(OUT / "tray.png")
     app_icon(32).save(OUT / "tray@2x.png")
+    # macOS menu bar: a black glyph only; the "Template" suffix lets macOS tint it for light/dark.
+    link_glyph(16, (0, 0, 0, 255), 0.11).save(OUT / "trayTemplate.png")
+    link_glyph(32, (0, 0, 0, 255), 0.11).save(OUT / "trayTemplate@2x.png")
     print("icons written to", OUT)
 
 

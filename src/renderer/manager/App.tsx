@@ -3,6 +3,7 @@ import { Copy, Minus, Square, X } from 'lucide-react'
 import type { ManagerRoute, ResizeEdge } from '@shared/api'
 import { useApp } from '../shared/store'
 import { useT } from '../shared/i18n'
+import { isMac } from '../shared/platform'
 import { Logo, cx } from '../shared/ui'
 import { Library } from './Library'
 import { Onboarding } from './Onboarding'
@@ -67,15 +68,16 @@ function WindowFrame({ children }: { children: ReactNode }) {
     <div
       className={cx(
         'relative flex h-full flex-col overflow-hidden bg-canvas',
-        !maximized && 'rounded-[22px] border border-line'
+        // macOS draws its own rounded corners; on Windows the transparent window needs ours.
+        !maximized && !isMac && 'rounded-[22px] border border-line'
       )}
     >
       <header
-        className="drag relative z-10 flex h-[52px] shrink-0 items-center justify-between pr-2 pl-6"
-        onDoubleClick={() => void window.linky.windowControl('maximize')}
+        className={cx('drag relative z-10 flex h-[52px] shrink-0 items-center justify-between pr-2', isMac ? 'pl-[92px]' : 'pl-6')}
+        onDoubleClick={isMac ? undefined : () => void window.linky.windowControl('maximize')}
       >
         <Logo />
-        <div className="no-drag flex items-center gap-0.5">
+        <div className={cx('no-drag flex items-center gap-0.5', isMac && 'hidden')}>
           <WindowButton label={t('win.minimize')} onClick={() => void window.linky.windowControl('minimize')}>
             <Minus size={15} strokeWidth={1.5} />
           </WindowButton>
@@ -91,7 +93,7 @@ function WindowFrame({ children }: { children: ReactNode }) {
         </div>
       </header>
       {children}
-      {!maximized && <ResizeHandles />}
+      {!maximized && !isMac && <ResizeHandles />}
     </div>
   )
 }

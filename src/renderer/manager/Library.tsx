@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronDown, Pin, Search } from 'lucide-react'
+import { Pin, Search } from 'lucide-react'
 import { displayContent, displayTitle, type Folder, type Snippet } from '@shared/model'
 import { searchSnippets, sortForPalette } from '@shared/ranking'
 import { useApp } from '../shared/store'
 import { relativeTime } from '../shared/format'
 import { useLang, useT } from '../shared/i18n'
+import { Select } from '../shared/Select'
+import { MOD, modPressed } from '../shared/platform'
 import type { MessageKey } from '@shared/i18n'
 import { Button, FolderPill, Kbd, SnippetTile, cx } from '../shared/ui'
 import { Inspector } from './Inspector'
@@ -28,11 +30,11 @@ export function Library({ filter }: { filter: LibraryFilter }) {
     const onNew = (): void => setSelected('new')
     window.addEventListener('linky:new-snippet', onNew)
     const onKey = (e: KeyboardEvent): void => {
-      if (e.ctrlKey && e.code === 'KeyN') {
+      if (modPressed(e) && e.code === 'KeyN') {
         e.preventDefault()
         setSelected('new')
       }
-      if (e.ctrlKey && e.code === 'KeyF') {
+      if (modPressed(e) && e.code === 'KeyF') {
         e.preventDefault()
         searchRef.current?.focus()
       }
@@ -92,20 +94,16 @@ export function Library({ filter }: { filter: LibraryFilter }) {
                 placeholder={t('lib.search')}
                 className="t-body-s min-w-0 flex-1 bg-transparent text-fg outline-none placeholder:text-fg-3"
               />
-              <Kbd>Ctrl F</Kbd>
+              <Kbd>{MOD} F</Kbd>
             </label>
             {filter.type !== 'recent' && (
-              <label className="t-body-s relative inline-flex items-center gap-2 rounded-full border border-line bg-surface py-2 pr-3 pl-3.5 font-medium hover:bg-hover">
-                {t(SORTS[sort])}
-                <ChevronDown size={15} strokeWidth={1.75} />
-                <select value={sort} onChange={(e) => setSort(e.target.value as Sort)} className="absolute inset-0 opacity-0" aria-label={t('lib.sort')}>
-                  {Object.entries(SORTS).map(([k, v]) => (
-                    <option key={k} value={k}>
-                      {t(v)}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <Select
+                value={sort}
+                onChange={setSort}
+                label={t('lib.sort')}
+                align="end"
+                options={(Object.keys(SORTS) as Sort[]).map((k) => ({ value: k, label: t(SORTS[k]) }))}
+              />
             )}
           </div>
         </div>

@@ -47,6 +47,8 @@ export class LinkyApp {
   }
 
   async start(launchedHidden: boolean): Promise<void> {
+    // macOS: a menu-bar app — the Dock icon only shows while the Linky window is open.
+    if (process.platform === 'darwin') app.dock?.hide()
     this.platform = await loadPlatformInput()
     this.palette = new PaletteWindow()
     const s = this.settings.get()
@@ -98,10 +100,15 @@ export class LinkyApp {
     const target = this.target
     this.target = null
     if (s.pasteMode === 'copy' || !this.platform.canPaste || !target) return 'copied'
+    if (this.platform.hasPermission && !this.platform.hasPermission()) {
+      // macOS without Accessibility: the snippet is on the clipboard; ask once for the permission.
+      this.platform.requestPermission?.()
+      return 'copied'
+    }
 
     await this.platform.waitModifiersReleased()
     if (!this.platform.focus(target)) return 'copied'
-    await delay(60)
+    await delay(this.platform.focusDelayMs)
     this.platform.sendPaste()
 
     if (s.restoreClipboard) {
@@ -112,6 +119,15 @@ export class LinkyApp {
       }, 600)
     }
     return 'pasted'
+  }
+
+  /** macOS Accessibility permission; always true where it isn't needed. */
+  hasPastePermission(): boolean {
+    return this.platform.hasPermission?.() ?? true
+  }
+
+  requestPastePermission(): void {
+    this.platform.requestPermission?.()
   }
 
   openManager(route: ManagerRoute): void {

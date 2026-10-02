@@ -51,6 +51,8 @@ export function registerIpc(ctl: LinkyApp): void {
     ctl.palette.hide()
     ctl.openManager(Route.optional().parse(route) ?? 'library')
   })
+  handle(IPC.hasPastePermission, () => ctl.hasPastePermission())
+  handle(IPC.requestPastePermission, () => ctl.requestPastePermission())
   handle(IPC.windowControl, (action: unknown) => ctl.manager.control(WindowActionSchema.parse(action)))
   handle(IPC.resizeWindow, (edge: unknown) => ctl.manager.resize(Edge.parse(edge)))
   handle(IPC.openExternal, (url: unknown) => {

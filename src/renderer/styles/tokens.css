@@ -12,6 +12,7 @@
   --bg-selected: #ececef;
   --bg-raised: #ffffff;
   --bg-track: #d6d6db;
+  --bg-popover: #ffffff;
   --border-subtle: #e3e3e7;
   --border-strong: #18181b;
   --text-primary: #18181b;
@@ -69,6 +70,8 @@
     --bg-selected: #2a2a2e;
     --bg-raised: rgb(255 255 255 / 0.09);
     --bg-track: #3a3a40;
+    /* Menus float above cards, so they sit one step lighter. */
+    --bg-popover: #232327;
     --border-subtle: #2a2a2e;
     --border-strong: #c9c9cf;
     --text-primary: #ededf0;

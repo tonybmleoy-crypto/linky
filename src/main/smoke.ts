@@ -34,6 +34,11 @@ export async function runSmoke(ctl: LinkyApp, dir: string): Promise<void> {
     for (const route of ['onboarding', 'library', 'settings'] as const) {
       ctl.openManager(route)
       await shot(managerWin(), `manager-${route}-${language}-${theme}`)
+      if (route === 'library') {
+        // Open the sort dropdown to check the custom menu.
+        await managerWin()?.webContents.executeJavaScript(`document.querySelector('[aria-haspopup=listbox]')?.click()`)
+        await shot(managerWin(), `manager-dropdown-${language}-${theme}`)
+      }
     }
     // Last, so nothing steals focus and dismisses it.
     const p = screen.getPrimaryDisplay().workArea

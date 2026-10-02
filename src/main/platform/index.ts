@@ -21,10 +21,16 @@ export interface PlatformInput {
   sendPaste(): void
   /** False when pasting is not supported and the app should only copy. */
   readonly canPaste: boolean
+  /** How long the target app needs to take focus before the keystroke. */
+  readonly focusDelayMs: number
+  /** macOS: is Linky allowed to send keystrokes (Accessibility permission)? */
+  hasPermission?(): boolean
+  requestPermission?(): void
 }
 
 const unsupported: PlatformInput = {
   canPaste: false,
+  focusDelayMs: 0,
   captureTarget: () => null,
   caretRect: () => null,
   focus: () => false,
@@ -33,14 +39,11 @@ const unsupported: PlatformInput = {
 }
 
 export async function loadPlatformInput(): Promise<PlatformInput> {
-  if (process.platform === 'win32') {
-    try {
-      const { createWin32Input } = await import('./win32')
-      return createWin32Input()
-    } catch (err) {
-      console.error('[linky] native input unavailable, falling back to copy-only', err)
-    }
+  try {
+    if (process.platform === 'win32') return (await import('./win32')).createWin32Input()
+    if (process.platform === 'darwin') return (await import('./darwin')).createDarwinInput()
+  } catch (err) {
+    console.error('[linky] native input unavailable, falling back to copy-only', err)
   }
-  // macOS (CGEvent + Accessibility permission) comes later.
   return unsupported
 }
