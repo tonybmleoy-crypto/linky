@@ -75,7 +75,7 @@ export function DemoScene({ t, lang }: { t: number; lang: Lang }) {
 
   return (
     <LangContext.Provider value={lang}>
-      <div className="relative overflow-hidden bg-canvas font-sans" style={{ width: STAGE.width, height: STAGE.height }}>
+      <div className="app-ui relative overflow-hidden bg-canvas" style={{ width: STAGE.width, height: STAGE.height }}>
         <Wallpaper />
 
         <div style={{ opacity: fadeOut }}>

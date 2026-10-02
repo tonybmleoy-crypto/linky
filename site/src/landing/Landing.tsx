@@ -139,20 +139,20 @@ function Hero({ c, lang }: { c: SiteCopy; lang: Lang }) {
           <span className="rounded-full bg-ink px-2 py-0.5 text-on-ink">New</span>
           {c.hero.badge}
         </span>
-        <h1 className="text-[56px] leading-[58px] font-light tracking-[-0.045em] sm:text-[72px] sm:leading-[74px] xl:text-[88px] xl:leading-[90px]">
+        <h1 className="text-[56px] leading-[58px] font-light tracking-[-0.03em] sm:text-[72px] sm:leading-[74px] xl:text-[88px] xl:leading-[90px]">
           {c.hero.title.map((line, i) => (
             <span key={i} className="block">
               {line}
             </span>
           ))}
         </h1>
-        <p className="max-w-[480px] text-[19px] leading-[29px] tracking-[-0.01em] text-fg-2">{c.hero.sub}</p>
+        <p className="max-w-[480px] text-[19px] leading-[29px] text-fg-2">{c.hero.sub}</p>
         <DownloadButtons c={c} />
         <p className="t-caption text-fg-3">{c.hero.meta}</p>
       </div>
 
       {/* Static product shot built from the real quick-menu component */}
-      <div className="relative hidden h-[560px] lg:block">
+      <div className="app-ui relative hidden h-[560px] lg:block">
         <Orbs className="-top-10 -left-10 h-[640px] w-[680px]" />
         <PalettePanel
           className="relative mt-10"
@@ -245,7 +245,7 @@ function How({ c }: { c: SiteCopy }) {
       <div className="grid gap-5 md:grid-cols-3">
         {c.how.steps.map((s, i) => (
           <article key={s.title} className="flex flex-col gap-4 rounded-[28px] bg-surface p-7 shadow-low">
-            <div className="flex h-[180px] items-center justify-center rounded-[20px] bg-sunken">{visuals[i]}</div>
+            <div className="app-ui flex h-[180px] items-center justify-center rounded-[20px] bg-sunken">{visuals[i]}</div>
             <span className="t-caption inline-flex size-7 items-center justify-center rounded-full bg-ink font-medium text-on-ink">{i + 1}</span>
             <h3 className="t-heading-m">{s.title}</h3>
             <p className="t-body-m text-fg-2">{s.body}</p>
