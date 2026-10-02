@@ -25,7 +25,7 @@ const en: DemoCopy = {
   typed2: 'And my calendar: ',
   pasted: 'Pasted',
   toast1: 'Pasted “Portfolio”',
-  toast2: 'Pasted “Book a call”',
+  toast2: 'Pasted “Book a 30-min call”',
   folders: ['Work', 'Dev', 'Design', 'Replies'],
   snippets: [
     { title: 'Portfolio', content: 'behance.net/tony-design', kind: 'link', folder: 'Work' },
@@ -45,7 +45,7 @@ const ru: DemoCopy = {
   typed2: 'А вот календарь: ',
   pasted: 'Вставлено',
   toast1: 'Вставлено «Портфолио»',
-  toast2: 'Вставлено «Созвон»',
+  toast2: 'Вставлено «Созвон на 30 минут»',
   folders: ['Работа', 'Код', 'Дизайн', 'Ответы'],
   snippets: [
     { title: 'Портфолио', content: 'behance.net/tony-design', kind: 'link', folder: 'Работа' },
