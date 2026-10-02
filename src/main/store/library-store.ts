@@ -145,11 +145,14 @@ export function emptyLibrary(): Library {
   return { version: 1, snippets: [], folders: [] }
 }
 
-/** First-run content so the palette isn't empty the first time it opens. */
+/**
+ * First-run content: the author's links, so the quick menu isn't empty the first time it opens
+ * (and shows what Linky is for). Only used when the library file doesn't exist yet.
+ */
 export function sampleLibrary(t: Translate): Library {
   const now = Date.now()
   const work: Folder = { id: nanoid(10), name: t('sample.work'), color: 'peach', order: 0 }
-  const replies: Folder = { id: nanoid(10), name: t('sample.replies'), color: 'lilac', order: 1 }
+  const personal: Folder = { id: nanoid(10), name: t('sample.personal'), color: 'mint', order: 1 }
   const make = (title: string, content: string, folderId: string | null, order: number, pinned = false): Snippet => ({
     id: nanoid(10),
     title,
@@ -165,11 +168,13 @@ export function sampleLibrary(t: Translate): Library {
   })
   return {
     version: 1,
-    folders: [work, replies],
+    folders: [work, personal],
     snippets: [
-      make(t('sample.github'), 'https://github.com/linky-app/linky', work.id, 0, true),
-      make(t('sample.reply'), t('sample.replyText'), replies.id, 1),
-      make(t('sample.call'), 'https://cal.com/your-name/30min', work.id, 2)
+      // A thank-you note first: it's also the example of a text snippet.
+      make(t('sample.thanks'), t('sample.thanksText'), null, 0, true),
+      make(t('sample.portfolio'), 'https://lopatinanton.vercel.app/', work.id, 1, true),
+      make(t('sample.behance'), 'https://www.behance.net/cyberpapaz', work.id, 2),
+      make(t('sample.telegram'), 'https://t.me/tonybml', personal.id, 3)
     ]
   }
 }

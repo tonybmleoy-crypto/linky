@@ -1,9 +1,9 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/inter';
+@import '@fontsource-variable/nunito-sans';
 @import './tokens.css';
 
 @theme inline {
-  --font-sans: 'Inter Variable', 'Segoe UI Variable', system-ui, sans-serif;
+  --font-sans: 'Nunito Sans Variable', 'Segoe UI Variable', system-ui, sans-serif;
 
   --color-canvas: var(--bg-canvas);
   --color-surface: var(--bg-surface);
@@ -49,20 +49,20 @@
 }
 
 /* Text styles (Figma: Display/*, Heading/*, Body/*, Caption, Overline, Kbd, Search).
-   Tracking is tuned for Inter; pages using another face override the --ls-* variables. */
-@utility t-display-xl { font-size: 64px; line-height: 68px; letter-spacing: var(--ls-display-xl, -0.04em); font-weight: 300; }
-@utility t-display-l { font-size: 44px; line-height: 48px; letter-spacing: var(--ls-display-l, -0.03em); font-weight: 300; }
-@utility t-heading-l { font-size: 30px; line-height: 36px; letter-spacing: var(--ls-heading-l, -0.025em); font-weight: 500; }
-@utility t-heading-m { font-size: 20px; line-height: 26px; letter-spacing: var(--ls-heading-m, -0.015em); font-weight: 500; }
-@utility t-heading-s { font-size: 16px; line-height: 22px; letter-spacing: var(--ls-heading-s, -0.01em); font-weight: 500; }
-@utility t-stat { font-size: 28px; line-height: 32px; letter-spacing: var(--ls-stat, -0.03em); font-weight: 500; }
-@utility t-body-l { font-size: 16px; line-height: 24px; letter-spacing: var(--ls-body-l, -0.01em); }
-@utility t-body-m { font-size: 14px; line-height: 20px; letter-spacing: var(--ls-body-m, -0.006em); }
-@utility t-body-s { font-size: 13px; line-height: 18px; letter-spacing: var(--ls-body-s, -0.003em); }
+   Tracking is tuned for Nunito Sans; a page using another face can override the --ls-* variables. */
+@utility t-display-xl { font-size: 64px; line-height: 68px; letter-spacing: var(--ls-display-xl, -0.025em); font-weight: 300; }
+@utility t-display-l { font-size: 44px; line-height: 48px; letter-spacing: var(--ls-display-l, -0.02em); font-weight: 300; }
+@utility t-heading-l { font-size: 30px; line-height: 36px; letter-spacing: var(--ls-heading-l, -0.015em); font-weight: 500; }
+@utility t-heading-m { font-size: 20px; line-height: 26px; letter-spacing: var(--ls-heading-m, -0.01em); font-weight: 500; }
+@utility t-heading-s { font-size: 16px; line-height: 22px; letter-spacing: var(--ls-heading-s, -0.005em); font-weight: 500; }
+@utility t-stat { font-size: 28px; line-height: 32px; letter-spacing: var(--ls-stat, -0.02em); font-weight: 500; }
+@utility t-body-l { font-size: 16px; line-height: 24px; letter-spacing: var(--ls-body-l, 0em); }
+@utility t-body-m { font-size: 14px; line-height: 20px; letter-spacing: var(--ls-body-m, 0em); }
+@utility t-body-s { font-size: 13px; line-height: 18px; letter-spacing: var(--ls-body-s, 0em); }
 @utility t-caption { font-size: 12px; line-height: 16px; }
-@utility t-overline { font-size: 11px; line-height: 14px; letter-spacing: var(--ls-overline, 0.02em); font-weight: 500; }
+@utility t-overline { font-size: 11px; line-height: 14px; letter-spacing: var(--ls-overline, 0.03em); font-weight: 500; }
 @utility t-kbd { font-size: 11px; line-height: 14px; font-weight: 500; }
-@utility t-search { font-size: 18px; line-height: 24px; letter-spacing: var(--ls-search, -0.012em); }
+@utility t-search { font-size: 18px; line-height: 24px; letter-spacing: var(--ls-search, -0.005em); }
 
 @utility glass-panel {
   background: var(--glass-fill);
@@ -83,7 +83,6 @@
   body {
     margin: 0;
     font-family: var(--font-sans);
-    font-feature-settings: 'cv11', 'ss01';
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     user-select: none;

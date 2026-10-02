@@ -152,7 +152,7 @@ function Hero({ c, lang }: { c: SiteCopy; lang: Lang }) {
       </div>
 
       {/* Static product shot built from the real quick-menu component */}
-      <div className="app-ui relative hidden h-[560px] lg:block">
+      <div className="relative hidden h-[560px] lg:block">
         <Orbs className="-top-10 -left-10 h-[640px] w-[680px]" />
         <PalettePanel
           className="relative mt-10"
@@ -245,7 +245,7 @@ function How({ c }: { c: SiteCopy }) {
       <div className="grid gap-5 md:grid-cols-3">
         {c.how.steps.map((s, i) => (
           <article key={s.title} className="flex flex-col gap-4 rounded-[28px] bg-surface p-7 shadow-low">
-            <div className="app-ui flex h-[180px] items-center justify-center rounded-[20px] bg-sunken">{visuals[i]}</div>
+            <div className="flex h-[180px] items-center justify-center rounded-[20px] bg-sunken">{visuals[i]}</div>
             <span className="t-caption inline-flex size-7 items-center justify-center rounded-full bg-ink font-medium text-on-ink">{i + 1}</span>
             <h3 className="t-heading-m">{s.title}</h3>
             <p className="t-body-m text-fg-2">{s.body}</p>

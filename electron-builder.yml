@@ -29,6 +29,13 @@ extraResources:
       - trayTemplate.png
       - trayTemplate@2x.png
 
+# Update feed: electron-updater reads latest.yml / latest-mac.yml from GitHub Releases.
+publish:
+  provider: github
+  owner: tonybmleoy-crypto
+  repo: linky
+  releaseType: release
+
 win:
   icon: resources/icon.ico
   target:

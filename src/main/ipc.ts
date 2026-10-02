@@ -53,6 +53,9 @@ export function registerIpc(ctl: LinkyApp): void {
   })
   handle(IPC.hasPastePermission, () => ctl.hasPastePermission())
   handle(IPC.requestPastePermission, () => ctl.requestPastePermission())
+  handle(IPC.getUpdate, () => ctl.updater.get())
+  handle(IPC.checkForUpdate, () => ctl.updater.check())
+  handle(IPC.installUpdate, () => ctl.updater.install())
   handle(IPC.windowControl, (action: unknown) => ctl.manager.control(WindowActionSchema.parse(action)))
   handle(IPC.resizeWindow, (edge: unknown) => ctl.manager.resize(Edge.parse(edge)))
   handle(IPC.openExternal, (url: unknown) => {

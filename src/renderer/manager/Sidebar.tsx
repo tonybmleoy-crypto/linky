@@ -6,6 +6,7 @@ import { useApp } from '../shared/store'
 import { prettyHotkey } from '../shared/format'
 import { useT } from '../shared/i18n'
 import { Button, cx, folderDot } from '../shared/ui'
+import { UpdateBanner } from './UpdateBanner'
 
 export type LibraryFilter = { type: 'all' } | { type: 'pinned' } | { type: 'recent' } | { type: 'folder'; id: string }
 
@@ -74,6 +75,7 @@ export function Sidebar({
 
       <div className="flex-1" />
 
+      <UpdateBanner />
       <div
         className="mb-1.5 flex flex-col gap-2.5 rounded-2xl border p-4"
         style={{ background: 'var(--banner-bg)', borderColor: 'var(--banner-border)', color: 'var(--banner-fg)' }}

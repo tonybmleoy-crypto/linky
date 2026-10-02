@@ -17,6 +17,16 @@ export interface HotkeyCheck {
   reason?: 'taken' | 'invalid'
 }
 
+export interface UpdateState {
+  status: 'idle' | 'checking' | 'latest' | 'available' | 'downloading' | 'ready' | 'error'
+  current: string
+  version?: string
+  progress?: number
+  error?: string
+  /** Windows installs in place; macOS (unsigned) opens the download page. */
+  canInstall?: boolean
+}
+
 export type WindowAction = 'minimize' | 'maximize' | 'close'
 export type ResizeEdge = 'n' | 's' | 'e' | 'w' | 'ne' | 'nw' | 'se' | 'sw'
 
@@ -57,6 +67,11 @@ export interface LinkyApi {
   hasPastePermission(): Promise<boolean>
   requestPastePermission(): Promise<void>
 
+  getUpdate(): Promise<UpdateState>
+  checkForUpdate(): Promise<UpdateState>
+  installUpdate(): Promise<void>
+  onUpdateChanged(cb: (state: UpdateState) => void): () => void
+
   windowControl(action: WindowAction): Promise<void>
   /** Starts resizing the manager window from an edge; `null` stops. */
   resizeWindow(edge: ResizeEdge | null): Promise<void>
@@ -87,6 +102,10 @@ export const IPC = {
   openExternal: 'app:openExternal',
   hasPastePermission: 'permission:get',
   requestPastePermission: 'permission:request',
+  getUpdate: 'update:get',
+  checkForUpdate: 'update:check',
+  installUpdate: 'update:install',
+  updateChanged: 'update:changed',
   windowControl: 'window:control',
   resizeWindow: 'window:resize',
   windowState: 'window:state',

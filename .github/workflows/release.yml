@@ -59,10 +59,13 @@ jobs:
       - uses: actions/upload-artifact@v5
         with:
           name: linky-${{ runner.os }}
+          # latest*.yml and blockmaps are the update feed that installed apps read.
           path: |
             dist/*.exe
             dist/*.dmg
             dist/*.zip
+            dist/*.blockmap
+            dist/latest*.yml
           if-no-files-found: error
 
   release:

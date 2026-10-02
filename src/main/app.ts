@@ -7,6 +7,7 @@ import type { Settings, SettingsPatch } from '@shared/model'
 import { loadPlatformInput, type PlatformInput, type TargetHandle } from './platform'
 import { restoreClipboard, snapshotClipboard } from './services/clipboard'
 import { HotkeyService } from './services/hotkey'
+import { UpdateService } from './services/updater'
 import { createTray, prettyAccelerator } from './services/tray'
 import { LibraryStore, sampleLibrary } from './store/library-store'
 import { SettingsStore } from './store/settings-store'
@@ -31,6 +32,10 @@ export class LinkyApp {
   readonly settings: SettingsStore
   readonly hotkey: HotkeyService
   readonly manager = new ManagerWindow()
+  readonly updater = new UpdateService(
+    () => this.t,
+    () => this.openManager('library')
+  )
   palette!: PaletteWindow
   private platform!: PlatformInput
   private target: TargetHandle | null = null
@@ -60,13 +65,19 @@ export class LinkyApp {
         openPalette: () => this.togglePalette(),
         openManager: () => this.openManager('library'),
         openSettings: () => this.openManager('settings'),
+        installUpdate: () => void this.updater.install(),
         quit: () => app.quit()
       },
-      () => ({ hotkey: prettyAccelerator(this.settings.get().hotkey), t: this.t })
+      () => ({ hotkey: prettyAccelerator(this.settings.get().hotkey), t: this.t, update: this.updater.get() })
     ).refresh
 
     this.library.on('changed', (lib) => this.broadcast(IPC.libraryChanged, lib))
     this.settings.on('changed', (next, patch) => this.applySettings(next, patch))
+    this.updater.on('changed', (state) => {
+      this.manager.send(IPC.updateChanged, state)
+      this.refreshTray()
+    })
+    this.updater.start()
 
     if (!s.onboardingDone) this.openManager('onboarding')
     else if (!launchedHidden) this.openManager('library')

@@ -1,47 +1,10 @@
-/* The site shares the app's design tokens and components. */
+/* The site shares the app's design tokens, components and typeface (Nunito Sans). */
 @import '../../src/renderer/styles/app.css';
-@import '@fontsource-variable/nunito-sans';
 
 @source '../../src/renderer';
 @source '.';
 
-/*
- * Marketing copy is set in Nunito Sans (Figma: Marketing/* text styles).
- * Pieces of the real app shown on the page keep the app's Inter — wrap them in .app-ui.
- */
+/* The app forbids text selection (it's a native-feeling UI); a website shouldn't. */
 body {
-  font-family: 'Nunito Sans Variable', 'Segoe UI Variable', system-ui, sans-serif;
-  /* Nunito Sans is rounder and wider than Inter, so it needs much less negative tracking. */
-  --ls-display-xl: -0.025em;
-  --ls-display-l: -0.02em;
-  --ls-heading-l: -0.015em;
-  --ls-heading-m: -0.01em;
-  --ls-heading-s: -0.005em;
-  --ls-stat: -0.02em;
-  --ls-body-l: 0em;
-  --ls-body-m: 0em;
-  --ls-body-s: 0em;
-  --ls-overline: 0.03em;
-  --ls-search: -0.005em;
-  /* Inter's stylistic sets (cv11, ss01) don't apply to Nunito Sans. */
-  font-feature-settings: normal;
-  /* The app forbids text selection (it's a native-feeling UI); a website shouldn't. */
   user-select: auto;
-}
-
-.app-ui {
-  font-family: 'Inter Variable', 'Segoe UI Variable', system-ui, sans-serif;
-  font-feature-settings: 'cv11', 'ss01';
-  /* "initial" makes each variable invalid, so the text styles fall back to their Inter values. */
-  --ls-display-xl: initial;
-  --ls-display-l: initial;
-  --ls-heading-l: initial;
-  --ls-heading-m: initial;
-  --ls-heading-s: initial;
-  --ls-stat: initial;
-  --ls-body-l: initial;
-  --ls-body-m: initial;
-  --ls-body-s: initial;
-  --ls-overline: initial;
-  --ls-search: initial;
 }

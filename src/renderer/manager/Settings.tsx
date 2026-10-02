@@ -4,6 +4,7 @@ import { useApp } from '../shared/store'
 import { acceleratorFromEvent, prettyHotkey } from '../shared/format'
 import { useT } from '../shared/i18n'
 import { MOD, isMac } from '../shared/platform'
+import { useUpdate } from '../shared/update'
 import { Button, Segmented, Switch, cx } from '../shared/ui'
 import pkg from '../../../package.json'
 
@@ -81,6 +82,7 @@ export function SettingsView() {
       <div className="flex-1" />
       <p className="t-caption flex flex-wrap gap-2 text-fg-3">
         <span>Linky {pkg.version}</span>·
+        <UpdateCheck />·
         <button className="font-medium text-fg hover:underline" onClick={() => void window.linky.openManager('onboarding')}>
           {t('set.tour')}
         </button>
@@ -117,6 +119,24 @@ export function usePastePermission(): boolean {
     return () => window.removeEventListener('focus', check)
   }, [])
   return allowed
+}
+
+function UpdateCheck() {
+  const t = useT()
+  const u = useUpdate()
+  const label =
+    u?.status === 'checking'
+      ? t('update.checking')
+      : u?.status === 'latest'
+        ? t('update.latest')
+        : u?.version && u.status !== 'idle'
+          ? t('update.available', { version: u.version })
+          : t('update.check')
+  return (
+    <button className="font-medium text-fg hover:underline" onClick={() => void window.linky.checkForUpdate()}>
+      {label}
+    </button>
+  )
 }
 
 function Group({ title, children }: { title: string; children: ReactNode }) {

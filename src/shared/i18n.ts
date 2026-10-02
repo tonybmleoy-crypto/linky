@@ -164,13 +164,29 @@ const en = {
   'onb.trick2': 'Show only one folder; press again for the next',
   'onb.trick3': 'Save the link you just copied as a new snippet',
 
+  // Updates
+  'tray.update': 'Update to {version}',
+  'update.available': 'Linky {version} is out',
+  'update.body': 'New features and fixes. Your snippets stay as they are.',
+  'update.install': 'Update',
+  'update.download': 'Download',
+  'update.downloading': 'Downloading… {n}%',
+  'update.ready': 'Restart to update',
+  'update.error': 'The download failed. Try again',
+  'update.check': 'Check for updates',
+  'update.checking': 'Checking…',
+  'update.latest': 'You have the latest version',
+  'update.notifyTitle': 'Linky {version} is available',
+  'update.notifyBody': 'Open Linky to update.',
+
   // First-run sample content
   'sample.work': 'Work',
-  'sample.replies': 'Replies',
-  'sample.github': 'Linky on GitHub',
-  'sample.reply': 'Quick reply',
-  'sample.replyText': 'Thanks! I’ll get back to you within a day.',
-  'sample.call': 'Book a call'
+  'sample.personal': 'Personal',
+  'sample.portfolio': 'Portfolio',
+  'sample.behance': 'Behance',
+  'sample.telegram': 'Telegram',
+  'sample.thanks': 'A note from Tony',
+  'sample.thanksText': 'Thanks for downloading Linky. You’re awesome! Tell me on Telegram what you’d like to see next: t.me/tonybml'
 }
 
 export type MessageKey = keyof typeof en
@@ -328,12 +344,27 @@ const ru: Record<MessageKey, string> = {
   'onb.trick2': 'Покажет записи одной папки. Нажмите еще раз, чтобы перейти к следующей',
   'onb.trick3': 'Сохранит скопированную ссылку как новую запись',
 
+  'tray.update': 'Обновить до {version}',
+  'update.available': 'Вышла версия {version}',
+  'update.body': 'Новые функции и исправления. Ваши записи останутся на месте.',
+  'update.install': 'Обновить',
+  'update.download': 'Скачать',
+  'update.downloading': 'Загрузка… {n}%',
+  'update.ready': 'Перезапустить и обновить',
+  'update.error': 'Не удалось скачать. Попробуйте еще раз',
+  'update.check': 'Проверить обновления',
+  'update.checking': 'Проверяем…',
+  'update.latest': 'У вас последняя версия',
+  'update.notifyTitle': 'Доступна версия Linky {version}',
+  'update.notifyBody': 'Откройте Linky, чтобы обновиться.',
+
   'sample.work': 'Работа',
-  'sample.replies': 'Ответы',
-  'sample.github': 'Linky на GitHub',
-  'sample.reply': 'Быстрый ответ',
-  'sample.replyText': 'Спасибо! Отвечу в течение дня.',
-  'sample.call': 'Созвон'
+  'sample.personal': 'Личное',
+  'sample.portfolio': 'Портфолио',
+  'sample.behance': 'Behance',
+  'sample.telegram': 'Telegram',
+  'sample.thanks': 'Спасибо от Тони',
+  'sample.thanksText': 'Спасибо, что скачали Linky. Вы крутые и классные! Напишите мне в Telegram, чего вам не хватает: t.me/tonybml'
 }
 
 const MESSAGES: Record<Lang, Record<MessageKey, string>> = { en, ru }
