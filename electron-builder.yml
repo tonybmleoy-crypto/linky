@@ -34,7 +34,7 @@ win:
   target:
     - target: nsis
       arch: [x64]
-  artifactName: Linky-Setup-${version}.${ext}
+  artifactName: Linky-Setup.${ext}
 
 nsis:
   # One click, per user, no admin rights — like most modern desktop apps.
@@ -58,7 +58,7 @@ mac:
       arch: [arm64, x64]
     - target: zip
       arch: [arm64, x64]
-  artifactName: Linky-${version}-${arch}.${ext}
+  artifactName: Linky-${arch}.${ext}
   hardenedRuntime: true
   gatekeeperAssess: false
   entitlements: resources/entitlements.mac.plist

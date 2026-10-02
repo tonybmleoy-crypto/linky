@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Check, ClipboardPaste, CornerDownLeft, Plus, Search } from 'lucide-react'
 import type { PaletteShownEvent } from '@shared/api'
-import { displayContent, displayTitle, type Folder, type Snippet } from '@shared/model'
+import type { Snippet } from '@shared/model'
 import { searchSnippets } from '@shared/ranking'
 import { useApp } from '../shared/store'
 import { prettyHotkey } from '../shared/format'
 import { useT } from '../shared/i18n'
-import { MOD, modPressed } from '../shared/platform'
-import { Chip, IconButton, Kbd, NumberBadge, SnippetTile, Toast, cx } from '../shared/ui'
+import { modPressed } from '../shared/platform'
+import { cx } from '../shared/ui'
+import { PalettePanel } from './PalettePanel'
 
 const MAX_RESULTS = 50
 
@@ -37,7 +37,6 @@ export function Palette() {
   }, [init])
 
   const folders = useMemo(() => [...(library?.folders ?? [])].sort((a, b) => a.order - b.order), [library])
-  const folderById = useMemo(() => new Map(folders.map((f) => [f.id, f])), [folders])
 
   const results = useMemo(() => {
     const all = library?.snippets ?? []
@@ -111,148 +110,26 @@ export function Palette() {
         if (e.target === e.currentTarget) void window.linky.hidePalette()
       }}
     >
-      <div
+      <PalettePanel
         key={showKey}
         style={{ ['--from-y' as string]: anchor === 'bottom' ? '6px' : '-6px', animation: 'palette-in 140ms cubic-bezier(.2,.8,.2,1)' }}
-        className="relative flex max-h-full w-[600px] flex-col gap-1.5 rounded-[32px] border border-glass-stroke p-2.5 shadow-glass"
-      >
-        <div className="absolute inset-0 -z-10 rounded-[32px] bg-[var(--palette-fill)] backdrop-blur-2xl" />
-
-        {/* Search */}
-        <label className="flex items-center gap-3 px-4 pt-3 pb-2">
-          <Search size={20} strokeWidth={1.75} className="shrink-0 text-fg-2" />
-          <input
-            ref={inputRef}
-            autoFocus
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t('pal.search')}
-            spellCheck={false}
-            className="t-search min-w-0 flex-1 bg-transparent text-fg outline-none placeholder:text-fg-3"
-          />
-          {hotkey && <Kbd>{hotkey}</Kbd>}
-        </label>
-
-        {/* Folder chips */}
-        {folders.length > 0 && (
-          <div className="flex gap-1.5 overflow-x-auto px-2.5 pb-1.5 [scrollbar-width:none]">
-            <Chip selected={folderId === null} onClick={() => setFolderId(null)} tabIndex={-1}>
-              {t('pal.all')}
-            </Chip>
-            {folders.map((f) => (
-              <Chip key={f.id} selected={folderId === f.id} onClick={() => setFolderId(f.id)} tabIndex={-1}>
-                {f.name}
-              </Chip>
-            ))}
-          </div>
-        )}
-
-        {/* Results */}
-        <div ref={listRef} className="-mx-0.5 flex min-h-0 flex-col gap-0.5 overflow-y-auto px-0.5">
-          {results.map((s, i) => (
-            <Row
-              key={s.id}
-              index={i}
-              snippet={s}
-              folder={s.folderId ? folderById.get(s.folderId) : undefined}
-              selected={i === selected}
-              onHover={() => setSelected(i)}
-              onPick={() => void paste(s)}
-            />
-          ))}
-          {results.length === 0 && (
-            <EmptyState
-              empty={empty}
-              query={query}
-              onSave={() => void saveFromClipboard()}
-              onOpen={() => void window.linky.openManager('library')}
-            />
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between px-3.5 pt-2.5 pb-1.5">
-          <button
-            onClick={() => void saveFromClipboard()}
-            tabIndex={-1}
-            className="t-caption flex items-center gap-2 rounded-full font-medium text-fg-2 hover:text-fg"
-          >
-            <Plus size={14} strokeWidth={1.75} /> {t('pal.saveClipboard')}
-            <span className="text-fg-3">{MOD} N</span>
-          </button>
-          <span className="t-caption text-fg-3">{t('pal.hints')}</span>
-        </div>
-
-        {toast && (
-          <div className="pointer-events-none absolute inset-x-0 -bottom-5 flex justify-center">
-            <Toast icon={Check}>{toast}</Toast>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function Row({
-  index,
-  snippet,
-  folder,
-  selected,
-  onHover,
-  onPick
-}: {
-  index: number
-  snippet: Snippet
-  folder?: Folder
-  selected: boolean
-  onHover: () => void
-  onPick: () => void
-}) {
-  const t = useT()
-  return (
-    <div
-      data-index={index}
-      onMouseMove={selected ? undefined : onHover}
-      onClick={onPick}
-      className={cx(
-        'flex items-center gap-3.5 rounded-[22px] p-2',
-        selected ? 'bg-raised pr-2 shadow-low' : 'pr-4'
-      )}
-    >
-      <SnippetTile kind={snippet.kind} color={folder?.color ?? null} />
-      <div className="min-w-0 flex-1">
-        <div className="t-body-m truncate font-medium text-fg">{displayTitle(snippet)}</div>
-        <div className="t-caption truncate text-fg-3">{snippet.title ? displayContent(snippet) : folder?.name ?? t(snippet.kind === 'link' ? 'kind.link' : 'kind.text')}</div>
-      </div>
-      {selected ? (
-        <div className="flex items-center gap-2.5">
-          <span className="t-caption font-medium text-fg-2">{t('pal.paste')}</span>
-          <IconButton icon={CornerDownLeft} variant="solid" label={t('pal.paste')} tabIndex={-1} />
-        </div>
-      ) : (
-        index < 9 && <NumberBadge n={index + 1} />
-      )}
-    </div>
-  )
-}
-
-function EmptyState({ empty, query, onSave, onOpen }: { empty: boolean; query: string; onSave: () => void; onOpen: () => void }) {
-  const t = useT()
-  if (!empty) {
-    return <div className="t-body-m px-4 py-8 text-center text-fg-2">{t('pal.noMatch', { q: query })}</div>
-  }
-  return (
-    <div className="flex flex-col items-center gap-3 px-6 py-8 text-center">
-      <div className="t-heading-s text-fg">{t('pal.emptyTitle')}</div>
-      <div className="t-body-s max-w-[340px] text-fg-2">{t('pal.emptyBody')}</div>
-      <div className="mt-1 flex gap-2">
-        <button onClick={onSave} className="t-body-s inline-flex items-center gap-2 rounded-full bg-ink px-3.5 py-2 font-medium text-on-ink">
-          <ClipboardPaste size={15} strokeWidth={1.75} /> {t('pal.saveClipboard')}
-        </button>
-        <button onClick={onOpen} className="t-body-s rounded-full border border-line bg-surface px-3.5 py-2 font-medium text-fg">
-          {t('pal.open')}
-        </button>
-      </div>
+        query={query}
+        onQueryChange={setQuery}
+        folders={folders}
+        folderId={folderId}
+        onFolder={setFolderId}
+        results={results}
+        selected={selected}
+        onHover={setSelected}
+        onPick={(s) => void paste(s)}
+        hotkey={hotkey}
+        toast={toast}
+        empty={empty}
+        onSaveClipboard={() => void saveFromClipboard()}
+        onOpenManager={() => void window.linky.openManager('library')}
+        inputRef={inputRef}
+        listRef={listRef}
+      />
     </div>
   )
 }

@@ -1,6 +1,13 @@
 /* Platform conventions for shortcuts and window chrome. */
 
-export const isMac = window.linky.platform === 'darwin'
+declare global {
+  // Lets pages outside Electron (the landing-page demo) pick which platform's conventions to show.
+  var __LINKY_PLATFORM__: string | undefined
+}
+
+const platform = globalThis.__LINKY_PLATFORM__ ?? (typeof window !== 'undefined' ? window.linky?.platform : undefined) ?? 'win32'
+
+export const isMac = platform === 'darwin'
 
 /** The "primary" modifier: ⌘ on macOS, Ctrl elsewhere. */
 export const MOD = isMac ? '⌘' : 'Ctrl'

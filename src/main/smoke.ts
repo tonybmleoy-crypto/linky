@@ -24,11 +24,10 @@ export async function runSmoke(ctl: LinkyApp, dir: string): Promise<void> {
     BrowserWindow.getAllWindows().find((w) => w !== ctl.palette.win && !w.isDestroyed())
 
   await wait(1500)
-  const combos: Array<[Settings['language'], Settings['theme']]> = [
-    ['ru', 'light'],
-    ['ru', 'dark'],
-    ['en', 'dark']
-  ]
+  // LINKY_SMOKE_COMBOS="en:dark,ru:light" narrows the run (e.g. for marketing screenshots).
+  const combos = (process.env['LINKY_SMOKE_COMBOS'] ?? 'ru:light,ru:dark,en:dark')
+    .split(',')
+    .map((c) => c.split(':') as [Settings['language'], Settings['theme']])
   for (const [language, theme] of combos) {
     ctl.settings.update({ language, theme })
     for (const route of ['onboarding', 'library', 'settings'] as const) {
@@ -38,6 +37,8 @@ export async function runSmoke(ctl: LinkyApp, dir: string): Promise<void> {
         // Open the sort dropdown to check the custom menu.
         await managerWin()?.webContents.executeJavaScript(`document.querySelector('[aria-haspopup=listbox]')?.click()`)
         await shot(managerWin(), `manager-dropdown-${language}-${theme}`)
+        await managerWin()?.webContents.executeJavaScript(`document.body.dispatchEvent(new MouseEvent('mousedown', { bubbles: true })); document.querySelector('[data-snippet-row]')?.click()`)
+        await shot(managerWin(), `manager-selected-${language}-${theme}`)
       }
     }
     // Last, so nothing steals focus and dismisses it.

@@ -150,6 +150,7 @@ function LibraryRow({ snippet, folder, selected, onClick }: { snippet: Snippet; 
   const lang = useLang()
   return (
     <div
+      data-snippet-row
       onClick={onClick}
       className={cx('flex items-center gap-3.5 rounded-2xl px-3 py-2.5 transition-colors', selected ? 'bg-raised shadow-low' : 'hover:bg-hover')}
     >
