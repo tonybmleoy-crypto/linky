@@ -54,8 +54,8 @@ const en = {
       { q: 'Where are my snippets stored?', a: 'In a single file on your computer. No account, no servers, nothing leaves your machine.' },
       { q: 'Can I change the shortcut?', a: 'Yes — pick any combination in Settings. Linky checks it isn’t already taken by another app.' },
       {
-        q: 'macOS says the app can’t be opened',
-        a: 'Linky isn’t notarized by Apple yet. Right-click the app in Applications and choose Open — you only need to do it once. Then allow Accessibility access so Linky can paste for you.'
+        q: 'macOS says Linky can’t be opened',
+        a: 'Linky isn’t notarized by Apple yet, so macOS asks you to confirm once. Try to open it, then go to System Settings → Privacy & Security, scroll down and click “Open Anyway” next to Linky. (On macOS 14 and earlier, right-click the app → Open works too.) Then allow Accessibility access so Linky can paste for you.'
       }
     ]
   },
@@ -119,8 +119,8 @@ const ru: SiteCopy = {
       { q: 'Где хранятся записи?', a: 'В одном файле на вашем компьютере. Без аккаунта и серверов — ничего не уходит наружу.' },
       { q: 'Можно поменять сочетание клавиш?', a: 'Да, любое — в настройках. Linky проверит, что его не заняла другая программа.' },
       {
-        q: 'macOS пишет, что приложение нельзя открыть',
-        a: 'Linky пока не прошёл нотаризацию Apple. Кликните по приложению в «Программах» правой кнопкой и выберите «Открыть» — это нужно один раз. Затем разрешите «Универсальный доступ», чтобы Linky мог вставлять за вас.'
+        q: 'macOS пишет, что Linky нельзя открыть',
+        a: 'Linky пока не прошёл нотаризацию Apple, поэтому macOS один раз просит подтверждения. Попробуйте открыть приложение, затем зайдите в Системные настройки → Конфиденциальность и безопасность, прокрутите вниз и нажмите «Всё равно открыть» рядом с Linky. (В macOS 14 и старше достаточно правого клика по приложению → «Открыть».) Затем разрешите «Универсальный доступ», чтобы Linky мог вставлять за вас.'
       }
     ]
   },
