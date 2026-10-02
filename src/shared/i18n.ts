@@ -1,0 +1,361 @@
+/* UI strings for main and renderers. Add a language by adding a dictionary with the same keys. */
+
+export type Lang = 'en' | 'ru'
+export type LangSetting = 'system' | Lang
+
+const en = {
+  // Window / tray
+  'win.minimize': 'Minimize',
+  'win.maximize': 'Maximize',
+  'win.restore': 'Restore',
+  'win.close': 'Close',
+  'tray.palette': 'Open quick menu',
+  'tray.open': 'Open Linky',
+  'tray.settings': 'Settings…',
+  'tray.quit': 'Quit Linky',
+
+  // Sidebar
+  newSnippet: 'New snippet',
+  'nav.all': 'All snippets',
+  'nav.pinned': 'Pinned',
+  'nav.recent': 'Recent',
+  'nav.folders': 'Folders',
+  'nav.newFolder': 'New folder',
+  'nav.folderPlaceholder': 'Folder name',
+  'nav.foldersEmpty': 'Group links into folders…',
+  'nav.settings': 'Settings',
+  'nav.renameHint': 'Double-click to rename',
+  'nav.changeColor': 'Change color',
+  'nav.deleteFolder': 'Delete {name}',
+  'nav.confirmDeleteFolder': 'Delete “{name}”?',
+  'nav.confirmDeleteFolderWith': 'Delete “{name}”? Its snippets ({count}) will stay in All snippets.',
+  'tip.title': 'Anywhere you type',
+  'tip.body': 'Press the hotkey in any text field to open your links.',
+
+  // Library
+  'lib.items': '{count} item|{count} items',
+  'lib.folders': '{count} folder|{count} folders',
+  'lib.search': 'Search',
+  'lib.sort': 'Sort',
+  'sort.used': 'Most used',
+  'sort.recent': 'Recently added',
+  'sort.name': 'Name',
+  'col.name': 'Name',
+  'col.folder': 'Folder',
+  'col.used': 'Used',
+  'col.last': 'Last used',
+  'kind.link': 'Link',
+  'kind.text': 'Text',
+  'empty.query': 'Nothing matches “{q}”.',
+  'empty.recent': 'Snippets you paste will show up here.',
+  'empty.pinned': 'Pin snippets to keep them at the top of the quick menu.',
+  'empty.all': 'Add the links and replies you send all the time.',
+
+  // Inspector
+  'ins.newHint': 'Paste a link or any text',
+  'ins.edited': 'Edited {time}',
+  'ins.untitled': 'Untitled',
+  'ins.close': 'Close',
+  'ins.title': 'Title',
+  'ins.titlePlaceholder': 'Optional — e.g. Portfolio',
+  'ins.content': 'Link or text',
+  'ins.openLink': 'Open link',
+  'ins.emptyError': 'Can’t be empty — changes aren’t saved.',
+  'ins.folder': 'Folder',
+  'ins.noFolder': 'No folder',
+  'ins.pin': 'Pin to top',
+  'ins.pinHint': 'Always first in the quick menu',
+  'ins.quickKey': 'Quick key',
+  'ins.quickKeyHint': 'Press {n} while the quick menu is open',
+  'ins.quickKeyNone': 'Only the first 9 snippets get a number',
+  'ins.pastes': 'pastes',
+  'ins.lastUsed': 'last used',
+  'ins.created': 'created',
+  'ins.saveHint': 'Ctrl Enter to save',
+  'ins.save': 'Save snippet',
+  'ins.delete': 'Delete',
+  'ins.confirmDelete': 'Delete “{name}”?',
+  'ins.saved': 'Saved',
+  'ins.saving': 'Saving…',
+
+  // Time
+  'time.never': 'Never',
+  'time.now': 'Just now',
+  'time.minutes': '{n}m ago',
+  'time.hours': '{n}h ago',
+  'time.yesterday': 'Yesterday',
+  'time.days': '{n} days ago',
+  'time.short.minutes': '{n}m',
+  'time.short.hours': '{n}h',
+  'time.short.days': '{n}d',
+
+  // Settings
+  'set.title': 'Settings',
+  'set.subtitle': 'Make Linky feel like it was always part of Windows.',
+  'set.general': 'General',
+  'set.hotkey': 'Shortcut',
+  'set.hotkeyHint': 'Opens the quick menu with your links in any app. Click the button to change it',
+  'set.recording': 'Press keys… (Esc to cancel)',
+  'set.hotkeyTaken': 'Already used by another app',
+  'set.hotkeyInvalid': 'Not a valid shortcut',
+  'set.login': 'Launch at login',
+  'set.loginHint': 'Start quietly in the tray when Windows starts',
+  'set.appearance': 'Appearance',
+  'set.appearanceHint': 'Follows your Windows theme by default',
+  'set.system': 'System',
+  'set.light': 'Light',
+  'set.dark': 'Dark',
+  'set.language': 'Language',
+  'set.languageHint': 'Interface language',
+  'set.pasting': 'Pasting',
+  'set.pasteMode': 'When you pick a snippet',
+  'set.pasteModeHint': 'Paste right away: it appears where your cursor is. Copy only: you paste it yourself with Ctrl+V',
+  'set.paste': 'Paste right away',
+  'set.copyOnly': 'Copy only',
+  'set.restore': 'Keep my clipboard',
+  'set.restoreHint': 'After pasting, what you copied before comes back to the clipboard',
+  'set.position': 'Where the quick menu opens',
+  'set.positionHint': 'Next to the blinking text cursor, or in the middle of the screen',
+  'set.atCursor': 'Next to cursor',
+  'set.center': 'Center',
+  'set.tour': 'Show welcome tour',
+  'set.privacy': 'Your snippets never leave this computer.',
+
+  // Palette
+  'pal.search': 'Search links & snippets',
+  'pal.all': 'All',
+  'pal.paste': 'Paste',
+  'pal.saveClipboard': 'Save from clipboard',
+  'pal.hints': '↑↓ navigate · tab folders · esc close',
+  'pal.saved': 'Saved from clipboard',
+  'pal.clipboardEmpty': 'Clipboard is empty',
+  'pal.pasteError': 'Couldn’t paste — try again',
+  'pal.noMatch': 'Nothing matches “{q}”',
+  'pal.emptyTitle': 'No snippets yet',
+  'pal.emptyBody': 'Copy a link and save it here, or add a few in the Linky window.',
+  'pal.open': 'Open Linky',
+
+  // Onboarding
+  'onb.welcome': 'welcome to linky',
+  'onb.headline1': 'Your links,',
+  'onb.headline2': 'one keystroke away.',
+  'onb.sub': 'Save the links and replies you send all the time. Paste them into any app without hunting through tabs.',
+  'onb.chip1': 'Portfolio',
+  'onb.chip2': 'Book a call',
+  'onb.chip3': 'Quick reply',
+  'onb.skip': 'Skip',
+  'onb.start': 'Get started',
+  'onb.continue': 'Continue',
+  'onb.finish': 'Open my library',
+  'onb.step': 'step {n} of {total}',
+  'onb.tryTitle': 'Give it a try',
+  'onb.tryDone': 'That’s it!',
+  'onb.tryBody': 'Click the field below and press the hotkey.',
+  'onb.tryDoneBody': 'The link landed right where your cursor was.',
+  'onb.tryField': 'Here’s my link: ',
+  'onb.tryHint': 'Hotkey taken by another app? Change it in Settings.',
+  'onb.tricks': 'Inside the quick menu',
+  'onb.tricksBody': 'Open it with {hotkey} — these keys work while it’s on screen.',
+  'onb.trick1': 'Press a number to paste the snippet under it',
+  'onb.trick2': 'Show only one folder; press again for the next',
+  'onb.trick3': 'Save the link you just copied as a new snippet',
+
+  // First-run sample content
+  'sample.work': 'Work',
+  'sample.replies': 'Replies',
+  'sample.github': 'Linky on GitHub',
+  'sample.reply': 'Quick reply',
+  'sample.replyText': 'Thanks! I’ll get back to you within a day.',
+  'sample.call': 'Book a call'
+}
+
+export type MessageKey = keyof typeof en
+
+const ru: Record<MessageKey, string> = {
+  'win.minimize': 'Свернуть',
+  'win.maximize': 'Развернуть',
+  'win.restore': 'Восстановить',
+  'win.close': 'Закрыть',
+  'tray.palette': 'Открыть быстрое меню',
+  'tray.open': 'Открыть Linky',
+  'tray.settings': 'Настройки…',
+  'tray.quit': 'Выйти из Linky',
+
+  newSnippet: 'Новая запись',
+  'nav.all': 'Все записи',
+  'nav.pinned': 'Закреплённые',
+  'nav.recent': 'Недавние',
+  'nav.folders': 'Папки',
+  'nav.newFolder': 'Новая папка',
+  'nav.folderPlaceholder': 'Название папки',
+  'nav.foldersEmpty': 'Разложите ссылки по папкам…',
+  'nav.settings': 'Настройки',
+  'nav.renameHint': 'Двойной клик — переименовать',
+  'nav.changeColor': 'Сменить цвет',
+  'nav.deleteFolder': 'Удалить «{name}»',
+  'nav.confirmDeleteFolder': 'Удалить папку «{name}»?',
+  'nav.confirmDeleteFolderWith': 'Удалить папку «{name}»? Записи из неё ({count}) останутся во «Все записи».',
+  'tip.title': 'Везде, где вы печатаете',
+  'tip.body': 'Нажмите сочетание в любом поле ввода, чтобы открыть ссылки.',
+
+  'lib.items': '{count} запись|{count} записи|{count} записей',
+  'lib.folders': '{count} папка|{count} папки|{count} папок',
+  'lib.search': 'Поиск',
+  'lib.sort': 'Сортировка',
+  'sort.used': 'Частые',
+  'sort.recent': 'Новые',
+  'sort.name': 'По названию',
+  'col.name': 'Название',
+  'col.folder': 'Папка',
+  'col.used': 'Вставок',
+  'col.last': 'Последняя',
+  'kind.link': 'Ссылка',
+  'kind.text': 'Текст',
+  'empty.query': 'Ничего не найдено по запросу «{q}».',
+  'empty.recent': 'Здесь появятся записи, которые вы вставляли.',
+  'empty.pinned': 'Закрепите записи, чтобы они всегда были первыми в быстром меню.',
+  'empty.all': 'Добавьте ссылки и ответы, которые отправляете чаще всего.',
+
+  'ins.newHint': 'Вставьте ссылку или любой текст',
+  'ins.edited': 'Изменено {time}',
+  'ins.untitled': 'Без названия',
+  'ins.close': 'Закрыть',
+  'ins.title': 'Название',
+  'ins.titlePlaceholder': 'Необязательно — например, Портфолио',
+  'ins.content': 'Ссылка или текст',
+  'ins.openLink': 'Открыть ссылку',
+  'ins.emptyError': 'Поле не может быть пустым — изменения не сохранены.',
+  'ins.folder': 'Папка',
+  'ins.noFolder': 'Без папки',
+  'ins.pin': 'Закрепить',
+  'ins.pinHint': 'Всегда первой в быстром меню',
+  'ins.quickKey': 'Быстрая клавиша',
+  'ins.quickKeyHint': 'Нажмите {n}, когда открыто быстрое меню',
+  'ins.quickKeyNone': 'Номер есть только у первых девяти записей',
+  'ins.pastes': 'вставок',
+  'ins.lastUsed': 'с последней',
+  'ins.created': 'создана',
+  'ins.saveHint': 'Ctrl Enter — сохранить',
+  'ins.save': 'Сохранить',
+  'ins.delete': 'Удалить',
+  'ins.confirmDelete': 'Удалить «{name}»?',
+  'ins.saved': 'Сохранено',
+  'ins.saving': 'Сохранение…',
+
+  'time.never': 'Никогда',
+  'time.now': 'Только что',
+  'time.minutes': '{n} мин назад',
+  'time.hours': '{n} ч назад',
+  'time.yesterday': 'Вчера',
+  'time.days': '{n} дн. назад',
+  'time.short.minutes': '{n} мин',
+  'time.short.hours': '{n} ч',
+  'time.short.days': '{n} дн',
+
+  'set.title': 'Настройки',
+  'set.subtitle': 'Пусть Linky ощущается частью Windows.',
+  'set.general': 'Основные',
+  'set.hotkey': 'Сочетание клавиш',
+  'set.hotkeyHint': 'Открывает быстрое меню со ссылками в любой программе. Нажмите на кнопку, чтобы поменять',
+  'set.recording': 'Нажмите клавиши… (Esc — отмена)',
+  'set.hotkeyTaken': 'Уже занято другой программой',
+  'set.hotkeyInvalid': 'Такое сочетание не подходит',
+  'set.login': 'Запуск вместе с Windows',
+  'set.loginHint': 'Тихо стартовать в трее при входе в систему',
+  'set.appearance': 'Оформление',
+  'set.appearanceHint': 'По умолчанию как в Windows',
+  'set.system': 'Системное',
+  'set.light': 'Светлое',
+  'set.dark': 'Тёмное',
+  'set.language': 'Язык',
+  'set.languageHint': 'Язык интерфейса',
+  'set.pasting': 'Вставка',
+  'set.pasteMode': 'Когда выбираете запись',
+  'set.pasteModeHint': 'Сразу вставлять — текст появится там, где стоит курсор. Только копировать — вставите сами через Ctrl+V',
+  'set.paste': 'Сразу вставлять',
+  'set.copyOnly': 'Только копировать',
+  'set.restore': 'Не трогать мой буфер обмена',
+  'set.restoreHint': 'После вставки в буфере снова окажется то, что вы копировали до этого',
+  'set.position': 'Где появляется быстрое меню',
+  'set.positionHint': 'Рядом с мигающим курсором ввода или в центре экрана',
+  'set.atCursor': 'У курсора',
+  'set.center': 'По центру',
+  'set.tour': 'Показать знакомство',
+  'set.privacy': 'Ваши записи не покидают этот компьютер.',
+
+  'pal.search': 'Поиск ссылок и текстов',
+  'pal.all': 'Все',
+  'pal.paste': 'Вставить',
+  'pal.saveClipboard': 'Сохранить из буфера',
+  'pal.hints': '↑↓ выбор · tab папки · esc закрыть',
+  'pal.saved': 'Сохранено из буфера',
+  'pal.clipboardEmpty': 'Буфер обмена пуст',
+  'pal.pasteError': 'Не удалось вставить — попробуйте ещё раз',
+  'pal.noMatch': 'Ничего не найдено по запросу «{q}»',
+  'pal.emptyTitle': 'Пока пусто',
+  'pal.emptyBody': 'Скопируйте ссылку и сохраните её здесь или добавьте несколько в окне Linky.',
+  'pal.open': 'Открыть Linky',
+
+  'onb.welcome': 'добро пожаловать в linky',
+  'onb.headline1': 'Ваши ссылки —',
+  'onb.headline2': 'в одно нажатие.',
+  'onb.sub': 'Сохраните ссылки и ответы, которые отправляете постоянно, и вставляйте их в любое приложение, не открывая вкладки.',
+  'onb.chip1': 'Портфолио',
+  'onb.chip2': 'Созвон',
+  'onb.chip3': 'Быстрый ответ',
+  'onb.skip': 'Пропустить',
+  'onb.start': 'Начать',
+  'onb.continue': 'Дальше',
+  'onb.finish': 'К моим записям',
+  'onb.step': 'шаг {n} из {total}',
+  'onb.tryTitle': 'Попробуйте',
+  'onb.tryDone': 'Получилось!',
+  'onb.tryBody': 'Кликните в поле ниже и нажмите сочетание клавиш.',
+  'onb.tryDoneBody': 'Ссылка вставилась прямо туда, где стоял курсор.',
+  'onb.tryField': 'Вот моя ссылка: ',
+  'onb.tryHint': 'Сочетание занято другой программой? Поменяйте его в настройках.',
+  'onb.tricks': 'В быстром меню',
+  'onb.tricksBody': 'Откройте его сочетанием {hotkey} — пока оно на экране, работают эти клавиши:',
+  'onb.trick1': 'Нажмите цифру — вставится запись с этим номером',
+  'onb.trick2': 'Покажет записи одной папки, нажмите ещё раз — следующей',
+  'onb.trick3': 'Сохранит скопированную ссылку как новую запись',
+
+  'sample.work': 'Работа',
+  'sample.replies': 'Ответы',
+  'sample.github': 'Linky на GitHub',
+  'sample.reply': 'Быстрый ответ',
+  'sample.replyText': 'Спасибо! Отвечу в течение дня.',
+  'sample.call': 'Созвон'
+}
+
+const MESSAGES: Record<Lang, Record<MessageKey, string>> = { en, ru }
+
+export function resolveLang(pref: LangSetting, systemLocale: string): Lang {
+  if (pref !== 'system') return pref
+  return systemLocale.toLowerCase().startsWith('ru') ? 'ru' : 'en'
+}
+
+/** Index into "one|few|many" forms (English uses "one|other"). */
+function pluralIndex(lang: Lang, n: number): number {
+  if (lang === 'en') return n === 1 ? 0 : 1
+  const mod10 = n % 10
+  const mod100 = n % 100
+  if (mod10 === 1 && mod100 !== 11) return 0
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 1
+  return 2
+}
+
+export type Translate = (key: MessageKey, vars?: Record<string, string | number>) => string
+
+export function createTranslator(lang: Lang): Translate {
+  const dict = MESSAGES[lang]
+  return (key, vars) => {
+    let text = dict[key] ?? en[key]
+    if (text.includes('|')) {
+      const forms = text.split('|')
+      const n = Number(vars?.count ?? vars?.n ?? 0)
+      text = forms[Math.min(pluralIndex(lang, n), forms.length - 1)]
+    }
+    return vars ? text.replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? `{${k}}`)) : text
+  }
+}
