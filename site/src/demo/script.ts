@@ -29,7 +29,7 @@ const en: DemoCopy = {
   folders: ['Work', 'Dev', 'Design', 'Replies'],
   snippets: [
     { title: 'Portfolio', content: 'behance.net/tony-design', kind: 'link', folder: 'Work' },
-    { title: 'Book a call — 30 min', content: 'cal.com/tony/30min', kind: 'link', folder: 'Work' },
+    { title: 'Book a 30-min call', content: 'cal.com/tony/30min', kind: 'link', folder: 'Work' },
     { title: 'GitHub', content: 'github.com/tony', kind: 'link', folder: 'Dev' },
     { title: 'Quick reply', content: 'Thanks! I’ll get back to you within a day.', kind: 'text', folder: 'Replies' },
     { title: 'Figma prototype', content: 'figma.com/proto/linky-v1', kind: 'link', folder: 'Design' }
@@ -49,7 +49,7 @@ const ru: DemoCopy = {
   folders: ['Работа', 'Код', 'Дизайн', 'Ответы'],
   snippets: [
     { title: 'Портфолио', content: 'behance.net/tony-design', kind: 'link', folder: 'Работа' },
-    { title: 'Созвон — 30 мин', content: 'cal.com/tony/30min', kind: 'link', folder: 'Работа' },
+    { title: 'Созвон на 30 минут', content: 'cal.com/tony/30min', kind: 'link', folder: 'Работа' },
     { title: 'GitHub', content: 'github.com/tony', kind: 'link', folder: 'Код' },
     { title: 'Быстрый ответ', content: 'Спасибо! Отвечу в течение дня.', kind: 'text', folder: 'Ответы' },
     { title: 'Прототип в Figma', content: 'figma.com/proto/linky-v1', kind: 'link', folder: 'Дизайн' }
