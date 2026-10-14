@@ -1,38 +1,74 @@
 import type { Lang } from '@shared/i18n'
+import type { FolderColor, Snippet } from '@shared/model'
 
 /*
  * Copy rules: no em dashes, no "ё" in Russian, active voice, no slogan-style fragments.
+ * Headings are arrays of lines: the layout reveals them line by line. A `muted` line is dimmed,
+ * a `pill` sits inline after the words (Figma: Marketing/Inline pill).
  */
+
+export type Pill = 'link' | 'keys' | 'glow'
+export interface HeadingLine {
+  text: string
+  muted?: boolean
+  pill?: Pill
+}
+
+export interface UseCase {
+  tag: string
+  title: string
+  body?: string
+  row: { title: string; content: string; kind: Snippet['kind'] }
+  tone: FolderColor
+}
 
 const en = {
   metaTitle: 'Linky: your links, one keystroke away',
   metaDescription: 'Press Ctrl + Alt + V in any text field and pick a link. Linky pastes it where you were typing. Free for Windows and macOS.',
-  nav: { how: 'How it works', features: 'Features', faq: 'FAQ', github: 'GitHub', download: 'Download' },
+  nav: { home: 'Home', how: 'How it works', features: 'Features', uses: 'Who it’s for', faq: 'FAQ', download: 'Download' },
   hero: {
-    badge: 'Free for Windows & macOS',
-    title: ['Your links,', 'one keystroke', 'away.'],
+    title: ['Your links,', 'one keystroke away'],
     sub: 'Press Ctrl + Alt + V in any text field and pick a link. Linky pastes it where you were typing.',
     windows: 'Download for Windows',
     mac: 'Download for macOS',
     meta: 'Windows 10+ · macOS 12+ · Your snippets stay on your computer'
   },
-  demo: { eyebrow: 'see it in action', title: 'Two links in 13 seconds, without opening a tab.' },
   how: {
-    eyebrow: 'how it works',
-    title: 'Three steps, no tabs.',
+    title: ['Three steps,', 'no tabs'],
+    sub: 'Save a link once. After that it shows up at your cursor in any app.',
     steps: [
       { title: 'Save what you send often', body: 'Portfolio, a booking link, a polite reply. Add it once, or save what’s on your clipboard.' },
-      { title: 'Press the shortcut anywhere', body: 'In a chat, an email or a form, the quick menu opens next to your cursor.' },
-      { title: 'Pick it and it’s pasted', body: 'Use the arrow keys and Enter, click, or press 1–9. Your clipboard keeps what you copied.' }
+      { title: 'Press the shortcut in any app', body: 'In a chat, an email or a form, the quick menu opens next to your cursor.' },
+      { title: 'Pick a snippet and it’s pasted', body: 'Use the arrow keys and Enter, click, or press 1 to 9. Your clipboard keeps what you copied.' }
     ],
-    saveHint: 'Ctrl N · save from clipboard'
+    saveHint: 'save from clipboard',
+    demo: 'Watch the demo'
+  },
+  present: {
+    title: [
+      { text: 'Pastes it', pill: 'link' },
+      { text: 'right where', muted: true, pill: 'keys' },
+      { text: 'you type' }
+    ] as HeadingLine[],
+    body: 'Linky waits in the tray. The menu opens at your text cursor, and after you pick a link Linky returns focus to the app and pastes it for you. Your clipboard stays untouched.',
+    cta: 'Download for free',
+    library: {
+      title: [{ text: 'All your links' }, { text: 'in one place', muted: true }] as HeadingLine[],
+      body: 'Edit titles, sort links into folders, see what you paste most. Light and dark themes, English and Russian.'
+    },
+    demoLabel: 'Linky demo',
+    libraryAlt: 'The Linky window: a list of saved links with folders and an editor on the right'
   },
   features: {
-    eyebrow: 'features',
-    title: 'A small app that saves you a lot of clicks.',
-    sub: 'Your go-to links and replies sit one keystroke away. The rest of the time Linky stays in the tray.',
+    title: [
+      { text: 'A small app', pill: 'glow' },
+      { text: 'that saves you', muted: true },
+      { text: 'a lot of clicks' }
+    ] as HeadingLine[],
+    prev: 'Previous',
+    next: 'Next',
     items: [
-      { title: 'Instant search', body: 'Type a few letters and fuzzy search finds the link by title or URL.' },
+      { title: 'Instant search', body: 'Type a few letters and Linky finds the link by title or URL.' },
       { title: 'Folders', body: 'Work, personal, replies. Press Tab in the menu to switch between them.' },
       { title: 'Pins and quick keys', body: 'Pin your top links. The first nine get a number you can press.' },
       { title: 'Your clipboard stays yours', body: 'After pasting, Linky puts back what you had copied before.' },
@@ -40,15 +76,24 @@ const en = {
       { title: 'Private by design', body: 'No account, no cloud, no tracking. Your snippets live in one file on your computer.' }
     ]
   },
-  showcase: {
-    eyebrow: 'your library',
-    title: 'One place for all your links.',
-    sub: 'Edit titles, sort links into folders, see what you paste most. Light and dark themes, English and Russian.',
-    alt: 'The Linky window: a list of saved links with folders and an editor on the right'
+  uses: {
+    title: 'Who it’s for',
+    items: [
+      {
+        tag: 'Designers',
+        title: 'Portfolio and Behance in any chat',
+        body: 'Send links to your work in Telegram, email and on freelance platforms without opening a tab.',
+        row: { title: 'Portfolio', content: 'lopatinanton.vercel.app', kind: 'link' },
+        tone: 'peach'
+      },
+      { tag: 'Sales', title: 'Your booking link on key 2', row: { title: 'Book a 30-min call', content: 'cal.com/tony/30min', kind: 'link' }, tone: 'sky' },
+      { tag: 'Recruiters', title: 'Job posts and email templates', row: { title: 'Job: product designer', content: 'Link to the job post', kind: 'link' }, tone: 'mint' },
+      { tag: 'Support', title: 'Canned replies without copy-paste', row: { title: 'Quick reply', content: 'Thanks! I’ll get back to you within a day.', kind: 'text' }, tone: 'lilac' },
+      { tag: 'Freelancers', title: 'Payment details in a second', row: { title: 'Payment details', content: 'Bank, account, SWIFT', kind: 'text' }, tone: 'rose' }
+    ] as UseCase[]
   },
   faq: {
-    eyebrow: 'faq',
-    title: 'Questions and answers.',
+    title: ['Questions', 'and answers'],
     items: [
       { q: 'Is it free?', a: 'Yes. Linky is free during early access. I may add a Pro plan with sync later, and everything that’s free now will stay free.' },
       {
@@ -63,7 +108,10 @@ const en = {
       }
     ]
   },
-  cta: { title: 'Stop hunting for links.', sub: 'Linky installs in a minute. Next time someone asks for your portfolio, you send it with one keystroke.' },
+  cta: {
+    title: ['Stop hunting', 'for links'],
+    sub: 'Linky installs in a minute. Next time someone asks for your portfolio, you send it with one keystroke.'
+  },
   footer: { made: 'Made by Tony', github: 'GitHub', releases: 'Releases', other: 'Русский' }
 }
 
@@ -72,30 +120,48 @@ export type SiteCopy = typeof en
 const ru: SiteCopy = {
   metaTitle: 'Linky: ваши ссылки в одно нажатие',
   metaDescription: 'Нажмите Ctrl + Alt + V в любом поле ввода и выберите ссылку. Linky вставит ее туда, где стоит курсор. Бесплатно для Windows и macOS.',
-  nav: { how: 'Как работает', features: 'Возможности', faq: 'Вопросы', github: 'GitHub', download: 'Скачать' },
+  nav: { home: 'Главная', how: 'Как работает', features: 'Возможности', uses: 'Для кого', faq: 'Вопросы', download: 'Скачать' },
   hero: {
-    badge: 'Бесплатно для Windows и macOS',
-    title: ['Ваши ссылки', 'в одно', 'нажатие.'],
+    title: ['Ваши ссылки', 'в одно нажатие'],
     sub: 'Нажмите Ctrl + Alt + V в любом поле ввода и выберите ссылку. Linky вставит ее туда, где стоит курсор.',
     windows: 'Скачать для Windows',
     mac: 'Скачать для macOS',
     meta: 'Windows 10+ · macOS 12+ · Записи хранятся только на вашем компьютере'
   },
-  demo: { eyebrow: 'как это выглядит', title: 'Две ссылки за 13 секунд, без единой вкладки.' },
   how: {
-    eyebrow: 'как это работает',
-    title: 'Три шага без вкладок.',
+    title: ['Три шага', 'без вкладок'],
+    sub: 'Сохраните ссылку один раз. Дальше она появляется у курсора в любой программе.',
     steps: [
       { title: 'Сохраните то, что отправляете часто', body: 'Портфолио, ссылка на запись, вежливый ответ. Добавьте один раз или сохраните то, что лежит в буфере обмена.' },
       { title: 'Нажмите сочетание в любой программе', body: 'В чате, письме или форме быстрое меню откроется рядом с курсором.' },
       { title: 'Выберите запись, и она вставится', body: 'Стрелками и Enter, кликом или цифрой от 1 до 9. В буфере обмена останется то, что вы копировали.' }
     ],
-    saveHint: 'Ctrl N · сохранить из буфера'
+    saveHint: 'сохранить из буфера',
+    demo: 'Смотреть демо'
+  },
+  present: {
+    title: [
+      { text: 'Вставляет', pill: 'link' },
+      { text: 'туда, где', muted: true, pill: 'keys' },
+      { text: 'стоит курсор' }
+    ],
+    body: 'Linky ждет в трее. Меню появляется у текстового курсора, а после выбора возвращает фокус в программу и вставляет ссылку сам. Буфер обмена остается нетронутым.',
+    cta: 'Скачать бесплатно',
+    library: {
+      title: [{ text: 'Все ссылки' }, { text: 'в одном месте', muted: true }],
+      body: 'Редактируйте названия, раскладывайте ссылки по папкам, смотрите, что вставляете чаще. Светлая и темная тема, русский и английский.'
+    },
+    demoLabel: 'Демонстрация Linky',
+    libraryAlt: 'Окно Linky: список сохраненных ссылок с папками и редактор справа'
   },
   features: {
-    eyebrow: 'возможности',
-    title: 'Маленькая программа, которая экономит кучу кликов.',
-    sub: 'Ваши ссылки и ответы лежат в одном нажатии. В остальное время Linky ждет в трее.',
+    title: [
+      { text: 'Маленькая программа,', pill: 'glow' },
+      { text: 'которая экономит', muted: true },
+      { text: 'кучу кликов' }
+    ],
+    prev: 'Назад',
+    next: 'Дальше',
     items: [
       { title: 'Быстрый поиск', body: 'Наберите пару букв, и Linky найдет ссылку по названию или адресу.' },
       { title: 'Папки', body: 'Работа, личное, ответы. Tab в меню переключает папки.' },
@@ -105,15 +171,24 @@ const ru: SiteCopy = {
       { title: 'Приватность', body: 'Без аккаунта, облака и слежки. Записи лежат в одном файле на вашем компьютере.' }
     ]
   },
-  showcase: {
-    eyebrow: 'ваша библиотека',
-    title: 'Все ссылки в одном месте.',
-    sub: 'Редактируйте названия, раскладывайте ссылки по папкам, смотрите, что вставляете чаще. Светлая и темная тема, русский и английский.',
-    alt: 'Окно Linky: список сохраненных ссылок с папками и редактор справа'
+  uses: {
+    title: 'Кому пригодится',
+    items: [
+      {
+        tag: 'Дизайнерам',
+        title: 'Портфолио и Behance в любом чате',
+        body: 'Отправляйте ссылки на работы в Telegram, почте и на фриланс-биржах, не открывая вкладки.',
+        row: { title: 'Портфолио', content: 'lopatinanton.vercel.app', kind: 'link' },
+        tone: 'peach'
+      },
+      { tag: 'Продажам', title: 'Ссылка на календарь цифрой 2', row: { title: 'Созвон на 30 минут', content: 'cal.com/tony/30min', kind: 'link' }, tone: 'sky' },
+      { tag: 'Рекрутерам', title: 'Вакансии и шаблоны писем', row: { title: 'Вакансия: продуктовый дизайнер', content: 'Ссылка на вакансию', kind: 'link' }, tone: 'mint' },
+      { tag: 'Поддержке', title: 'Типовые ответы без копипаста', row: { title: 'Быстрый ответ', content: 'Спасибо! Отвечу в течение дня.', kind: 'text' }, tone: 'lilac' },
+      { tag: 'Фрилансерам', title: 'Реквизиты и прайс за секунду', row: { title: 'Реквизиты для оплаты', content: 'ИП, счет, БИК', kind: 'text' }, tone: 'rose' }
+    ]
   },
   faq: {
-    eyebrow: 'вопросы',
-    title: 'Вопросы и ответы.',
+    title: ['Вопросы', 'и ответы'],
     items: [
       { q: 'Это бесплатно?', a: 'Да. Пока Linky в раннем доступе, он бесплатный. Позже я могу добавить Pro с синхронизацией, а все бесплатное останется бесплатным.' },
       {
@@ -128,7 +203,10 @@ const ru: SiteCopy = {
       }
     ]
   },
-  cta: { title: 'Хватит искать ссылки.', sub: 'Linky устанавливается за минуту. Когда вас снова попросят портфолио, вы отправите его одним нажатием.' },
+  cta: {
+    title: ['Хватит', 'искать ссылки'],
+    sub: 'Linky устанавливается за минуту. Когда вас снова попросят портфолио, вы отправите его одним нажатием.'
+  },
   footer: { made: 'Сделал Тони', github: 'GitHub', releases: 'Релизы', other: 'English' }
 }
 

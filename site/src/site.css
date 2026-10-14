@@ -8,3 +8,85 @@
 body {
   user-select: auto;
 }
+
+/*
+ * Scroll reveal (see landing/motion.ts). --i staggers siblings by 80 ms.
+ *   line:  a heading line slides up from under its mask
+ *   pill:  an inline pill unrolls from the left
+ *   fade:  fade in and rise 40 px
+ *   float: the hero palette surfaces from a blur
+ */
+[data-reveal] {
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.8s var(--ease),
+    clip-path 0.9s var(--ease),
+    filter 0.9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+[data-reveal='line']:not([data-in]) {
+  transform: translateY(105%);
+}
+[data-reveal='pill']:not([data-in]) {
+  clip-path: inset(0 100% 0 0 round 999px);
+}
+[data-reveal='fade']:not([data-in]) {
+  opacity: 0;
+  transform: translateY(40px);
+}
+[data-reveal='float']:not([data-in]) {
+  opacity: 0;
+  filter: blur(16px);
+  transform: translateY(24px) scale(0.98);
+}
+
+/* Press feedback lands on pointer-down, not on release. */
+.press {
+  transition:
+    transform 160ms ease-out,
+    background-color 200ms,
+    color 200ms,
+    opacity 200ms;
+}
+.press:active {
+  transform: scale(0.97);
+  transition-duration: 60ms;
+}
+
+/* Keyboard focus is always visible; mouse clicks don't draw a ring. */
+:where(a, button):focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 3px;
+}
+
+/* Without transparency the floating nav becomes a solid bar. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-nav {
+    background: var(--bg-surface);
+    backdrop-filter: none;
+  }
+}
+
+/* Glows drift slowly so the dark sections never feel static. */
+.glow {
+  animation: glow-drift 18s ease-in-out infinite alternate;
+}
+@keyframes glow-drift {
+  to {
+    translate: 40px -30px;
+    scale: 1.08;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition: opacity 0.3s linear;
+    transform: none !important;
+    clip-path: none !important;
+    filter: none !important;
+  }
+  .glow {
+    animation: none;
+  }
+}

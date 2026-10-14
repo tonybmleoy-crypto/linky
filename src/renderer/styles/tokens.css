@@ -1,37 +1,42 @@
 /*
  * Design tokens — mirror of the Figma variables ("Linky — Design" file:
  * Color / Dimensions collections, text & effect styles). Keep names in sync.
+ *
+ * Colors are light-dark() pairs, so they follow the element's color-scheme: the OS theme by default,
+ * or a forced mode inside .theme-light / .theme-dark (Figma: explicit variable mode on a frame).
  */
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
 
-  --bg-canvas: #ececef;
-  --bg-surface: #ffffff;
-  --bg-sunken: #f4f4f6;
-  --bg-hover: #f4f4f6;
-  --bg-selected: #ececef;
-  --bg-raised: #ffffff;
-  --bg-track: #d6d6db;
-  --bg-popover: #ffffff;
-  --border-subtle: #e3e3e7;
-  --border-strong: #18181b;
-  --text-primary: #18181b;
-  --text-secondary: #64646c;
-  --text-tertiary: #a3a3ab;
-  --text-on-ink: #ffffff;
-  --accent-ink: #18181b;
-  --accent-warm: #ffb547;
-  --status-success: #22a06b;
-  --status-danger: #e5484d;
-  --glass-fill: rgb(255 255 255 / 0.4);
-  --glass-fill-strong: rgb(255 255 255 / 0.6);
-  --glass-stroke: rgb(255 255 255 / 0.9);
-  --glass-tint: rgb(0 0 0 / 0.06);
-  --tag-peach: #ffd9b8;
-  --tag-rose: #ffd1dc;
-  --tag-lilac: #ded3ff;
-  --tag-mint: #c9eedd;
-  --tag-sky: #cfe3ff;
+  --bg-canvas: light-dark(#ececef, #0e0e10);
+  --bg-surface: light-dark(#ffffff, #18181b);
+  --bg-sunken: light-dark(#f4f4f6, #121214);
+  --bg-hover: light-dark(#f4f4f6, #222226);
+  --bg-selected: light-dark(#ececef, #2a2a2e);
+  --bg-raised: light-dark(#ffffff, rgb(255 255 255 / 0.09));
+  --bg-track: light-dark(#d6d6db, #3a3a40);
+  /* On dark, menus float above cards, so they sit one step lighter. */
+  --bg-popover: light-dark(#ffffff, #232327);
+  --border-subtle: light-dark(#e3e3e7, #2a2a2e);
+  --border-strong: light-dark(#18181b, #c9c9cf);
+  /* Dark is contrast-tuned: no pure black holes, no full-white slabs. Tertiary text ≥ 4.5:1 on surface. */
+  --text-primary: light-dark(#18181b, #ededf0);
+  --text-secondary: light-dark(#64646c, #a3a3ab);
+  --text-tertiary: light-dark(#a3a3ab, #7e7e87);
+  --text-on-ink: light-dark(#ffffff, #18181b);
+  --accent-ink: light-dark(#18181b, #dcdce0);
+  --accent-warm: light-dark(#ffb547, #f59e0b);
+  --status-success: light-dark(#22a06b, #5bd49b);
+  --status-danger: light-dark(#e5484d, #ff6369);
+  --glass-fill: light-dark(rgb(255 255 255 / 0.4), rgb(28 28 32 / 0.45));
+  --glass-fill-strong: light-dark(rgb(255 255 255 / 0.6), rgb(20 20 22 / 0.8));
+  --glass-stroke: light-dark(rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.1));
+  --glass-tint: light-dark(rgb(0 0 0 / 0.06), rgb(255 255 255 / 0.06));
+  --tag-peach: light-dark(#ffd9b8, #8a5a3a);
+  --tag-rose: light-dark(#ffd1dc, #86475a);
+  --tag-lilac: light-dark(#ded3ff, #5b4b8e);
+  --tag-mint: light-dark(#c9eedd, #2f6f55);
+  --tag-sky: light-dark(#cfe3ff, #3a5f8f);
   /* Folder dots (saturated versions of the tags). */
   --dot-peach: #ffb547;
   --dot-rose: #ff8fa8;
@@ -41,64 +46,48 @@
 
   /* The palette floats over arbitrary desktop content without OS blur (Windows 10),
      so it needs a denser fill than the in-app glass. */
-  --palette-fill: rgb(250 250 251 / 0.9);
+  --palette-fill: light-dark(rgb(250 250 251 / 0.9), rgb(30 30 34 / 0.92));
 
   /* Sidebar hotkey tip: an ink card on light; a quiet raised card on dark. */
-  --banner-bg: #18181b;
-  --banner-border: #18181b;
-  --banner-fg: #ffffff;
-  --banner-key: rgb(255 255 255 / 0.15);
-  --orb-opacity: 1;
+  --banner-bg: light-dark(#18181b, #1f1f23);
+  --banner-border: light-dark(#18181b, #2e2e33);
+  --banner-fg: light-dark(#ffffff, #ededf0);
+  --banner-key: light-dark(rgb(255 255 255 / 0.15), rgb(255 255 255 / 0.08));
 
   --shadow-low: 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 6px rgb(0 0 0 / 0.04);
   --shadow-window: 0 1px 2px rgb(0 0 0 / 0.04), 0 20px 50px -10px rgb(0 0 0 / 0.08);
   --shadow-popover: 0 1px 2px rgb(0 0 0 / 0.05), 0 30px 70px -12px rgb(0 0 0 / 0.14);
+}
+
+/* Non-color tokens can't use light-dark(), so each mode sets them explicitly. */
+:root,
+.theme-light {
+  --orb-opacity: 1;
   --shadow-glass: inset 0 1.5px 0 rgb(255 255 255 / 0.9), inset 0 0 24px rgb(255 255 255 / 0.35),
     0 1px 2px rgb(0 0 0 / 0.06), 0 18px 40px -12px rgb(0 0 0 / 0.22);
   --ring-focus: 0 0 0 4px rgb(0 0 0 / 0.1);
 }
 
+.theme-light {
+  color-scheme: light;
+}
+
+.theme-dark {
+  color-scheme: dark;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    color-scheme: dark;
-
-    /* Contrast-tuned: no pure black holes, no full-white slabs. Tertiary text ≥ 4.5:1 on surface. */
-    --bg-canvas: #0e0e10;
-    --bg-surface: #18181b;
-    --bg-sunken: #121214;
-    --bg-hover: #222226;
-    --bg-selected: #2a2a2e;
-    --bg-raised: rgb(255 255 255 / 0.09);
-    --bg-track: #3a3a40;
-    /* Menus float above cards, so they sit one step lighter. */
-    --bg-popover: #232327;
-    --border-subtle: #2a2a2e;
-    --border-strong: #c9c9cf;
-    --text-primary: #ededf0;
-    --text-secondary: #a3a3ab;
-    --text-tertiary: #7e7e87;
-    --text-on-ink: #18181b;
-    --accent-ink: #dcdce0;
-    --accent-warm: #f59e0b;
-    --status-success: #5bd49b;
-    --status-danger: #ff6369;
-    --glass-fill: rgb(28 28 32 / 0.45);
-    --glass-fill-strong: rgb(20 20 22 / 0.8);
-    --glass-stroke: rgb(255 255 255 / 0.1);
-    --glass-tint: rgb(255 255 255 / 0.06);
-    --tag-peach: #8a5a3a;
-    --tag-rose: #86475a;
-    --tag-lilac: #5b4b8e;
-    --tag-mint: #2f6f55;
-    --tag-sky: #3a5f8f;
-    --palette-fill: rgb(30 30 34 / 0.92);
-    --banner-bg: #1f1f23;
-    --banner-border: #2e2e33;
-    --banner-fg: #ededf0;
-    --banner-key: rgb(255 255 255 / 0.08);
     --orb-opacity: 0.4;
     --shadow-glass: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 1px 2px rgb(0 0 0 / 0.3),
       0 18px 40px -12px rgb(0 0 0 / 0.6);
     --ring-focus: 0 0 0 4px rgb(255 255 255 / 0.12);
   }
+}
+
+.theme-dark {
+  --orb-opacity: 0.4;
+  --shadow-glass: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 1px 2px rgb(0 0 0 / 0.3),
+    0 18px 40px -12px rgb(0 0 0 / 0.6);
+  --ring-focus: 0 0 0 4px rgb(255 255 255 / 0.12);
 }

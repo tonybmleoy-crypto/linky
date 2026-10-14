@@ -80,7 +80,7 @@ export function PalettePanel(p: PalettePanelProps) {
       {/* Results */}
       <div ref={p.listRef} className="-mx-0.5 flex min-h-0 flex-col gap-0.5 overflow-y-auto px-0.5">
         {p.results.map((s, i) => (
-          <Row
+          <PaletteRow
             key={s.id}
             index={i}
             snippet={s}
@@ -127,7 +127,8 @@ function FakeCaret({ after }: { after: string }) {
   )
 }
 
-function Row({
+/** Figma: "Palette row". Exported for the landing page. */
+export function PaletteRow({
   index,
   snippet,
   folder,
@@ -139,8 +140,8 @@ function Row({
   snippet: Snippet
   folder?: Folder
   selected: boolean
-  onHover: () => void
-  onPick: () => void
+  onHover?: () => void
+  onPick?: () => void
 }) {
   const t = useT()
   return (

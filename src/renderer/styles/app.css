@@ -50,6 +50,12 @@
 
 /* Text styles (Figma: Display/*, Heading/*, Body/*, Caption, Overline, Kbd, Search).
    Tracking is tuned for Nunito Sans; a page using another face can override the --ls-* variables. */
+/* Marketing-only sizes (Figma: Marketing/Display/Hero, Display/Section, Heading/XL, Body/XL, Label/L). */
+@utility t-display-hero { font-size: 96px; line-height: 96px; letter-spacing: -0.03em; font-weight: 500; }
+@utility t-display-section { font-size: 72px; line-height: 72px; letter-spacing: -0.025em; font-weight: 500; }
+@utility t-heading-xl { font-size: 36px; line-height: 40px; letter-spacing: -0.015em; font-weight: 500; }
+@utility t-body-xl { font-size: 20px; line-height: 28px; }
+@utility t-label-l { font-size: 18px; line-height: 24px; font-weight: 600; }
 @utility t-display-xl { font-size: 64px; line-height: 68px; letter-spacing: var(--ls-display-xl, -0.025em); font-weight: 300; }
 @utility t-display-l { font-size: 44px; line-height: 48px; letter-spacing: var(--ls-display-l, -0.02em); font-weight: 300; }
 @utility t-heading-l { font-size: 30px; line-height: 36px; letter-spacing: var(--ls-heading-l, -0.015em); font-weight: 500; }

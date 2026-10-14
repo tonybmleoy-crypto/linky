@@ -41,6 +41,23 @@ const buttonVariants: Record<ButtonVariant, string> = {
   danger: 'text-fg-2 hover:bg-glass-tint hover:text-danger'
 }
 
+type ButtonSize = 'l' | 'm' | 's'
+const buttonSizes: Record<ButtonSize, string> = {
+  l: 't-label-l gap-2.5 px-8 py-[18px]',
+  m: 't-body-m gap-2 px-5 py-3 font-medium',
+  s: 't-body-s gap-2 px-3.5 py-2 font-medium'
+}
+
+/** Button styling for elements that aren't <button> (e.g. download links on the site). */
+export function buttonClass(variant: ButtonVariant = 'primary', size: ButtonSize = 'm', className?: string): string {
+  return cx(
+    'inline-flex shrink-0 items-center justify-center rounded-full whitespace-nowrap transition-[background,opacity,color] disabled:pointer-events-none disabled:opacity-40',
+    buttonSizes[size],
+    buttonVariants[variant],
+    className
+  )
+}
+
 export function Button({
   variant = 'primary',
   size = 'm',
@@ -51,23 +68,16 @@ export function Button({
   ...rest
 }: ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant
-  size?: 'm' | 's'
+  size?: ButtonSize
   icon?: LucideIcon
   trailingIcon?: LucideIcon
 }) {
+  const iconSize = size === 'l' ? 20 : 16
   return (
-    <button
-      {...rest}
-      className={cx(
-        'inline-flex shrink-0 items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-[background,opacity,color] disabled:pointer-events-none disabled:opacity-40',
-        size === 'm' ? 't-body-m px-5 py-3' : 't-body-s px-3.5 py-2',
-        buttonVariants[variant],
-        className
-      )}
-    >
-      {Icon && <Icon size={16} strokeWidth={1.75} className={variant === 'danger' ? 'text-danger' : undefined} />}
+    <button {...rest} className={buttonClass(variant, size, className)}>
+      {Icon && <Icon size={iconSize} strokeWidth={1.75} className={variant === 'danger' ? 'text-danger' : undefined} />}
       {children}
-      {Trailing && <Trailing size={16} strokeWidth={1.75} />}
+      {Trailing && <Trailing size={iconSize} strokeWidth={1.75} />}
     </button>
   )
 }
@@ -108,15 +118,16 @@ export function IconButton({
 }
 
 // ---- Chip ----
+export function chipClass(selected?: boolean): string {
+  return cx(
+    't-caption shrink-0 rounded-full px-3.5 py-1.5 font-medium transition-colors',
+    selected ? 'bg-ink text-on-ink' : 'border border-line bg-glass-strong text-fg hover:bg-hover'
+  )
+}
+
 export function Chip({ selected, children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { selected?: boolean }) {
   return (
-    <button
-      {...rest}
-      className={cx(
-        't-caption shrink-0 rounded-full px-3.5 py-1.5 font-medium transition-colors',
-        selected ? 'bg-ink text-on-ink' : 'border border-line bg-glass-strong text-fg hover:bg-hover'
-      )}
-    >
+    <button {...rest} className={chipClass(selected)}>
       {children}
     </button>
   )
