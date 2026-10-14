@@ -261,6 +261,15 @@ function How({ c, lang }: { c: SiteCopy; lang: Lang }) {
     return () => clearInterval(t)
   }, [paused, touched])
 
+  // Hover opens a card after a short pause, so a pointer just passing over doesn't make the row twitch.
+  // A click opens it at once.
+  const hover = useRef(0)
+  const hoverOpen = (i: number): void => {
+    clearTimeout(hover.current)
+    hover.current = window.setTimeout(() => setActive(i), 140)
+  }
+  useEffect(() => () => clearTimeout(hover.current), [])
+
   const media: ReactNode[] = [<SaveMedia key="save" lang={lang} hint={c.how.saveHint} />, <HotkeyMedia key="keys" />, <PastedMedia key="pasted" lang={lang} />]
 
   return (
@@ -272,38 +281,58 @@ function How({ c, lang }: { c: SiteCopy; lang: Lang }) {
         </p>
       </div>
 
-      {/* Figma: Marketing/Step card (Expanded / Collapsed) */}
-      <div data-reveal="fade" className="mt-14 flex gap-4 max-xl:flex-col" onPointerEnter={() => setPaused(true)} onPointerLeave={() => setPaused(false)}>
+      {/*
+        Figma: Marketing/Step card (Expanded / Collapsed). Only the card width animates. Everything inside
+        has a fixed size and the card crops it like a mask, so nothing re-wraps or reflows mid-transition.
+      */}
+      <div
+        data-reveal="fade"
+        className="mt-14 flex gap-4 max-xl:flex-col"
+        onPointerEnter={() => setPaused(true)}
+        onPointerLeave={() => {
+          setPaused(false)
+          clearTimeout(hover.current)
+        }}
+      >
         {c.how.steps.map((s, i) => {
           const open = i === active
           return (
             <article
               key={s.title}
               style={{ flexGrow: open ? 1 : 0 }}
-              onPointerEnter={() => setActive(i)}
+              onPointerEnter={() => hoverOpen(i)}
               onClick={() => {
+                clearTimeout(hover.current)
                 setActive(i)
                 setTouched(true)
               }}
               className={cx(
-                'flex min-w-0 cursor-default flex-col gap-6 rounded-2xl p-8 transition-[flex-grow] duration-500 ease-[cubic-bezier(.2,.7,.2,1)] xl:h-[640px] xl:basis-[320px]',
+                'flex min-w-0 cursor-default flex-col gap-6 overflow-clip rounded-2xl p-8 transition-[flex-grow] duration-[600ms] ease-[cubic-bezier(.32,.72,0,1)] xl:h-[640px] xl:basis-[320px]',
                 TONE_BG[STEP_TONES[i]]
               )}
             >
-              <div className="flex min-h-[220px] flex-1 items-center justify-center overflow-clip">{media[i]}</div>
-              <div className="flex flex-col gap-3.5">
+              {/* Bleeds to the card edges, so a collapsed card crops the media instead of squeezing it.
+                  The wide snippet row sits on the text's left edge, so only its right end gets cropped. */}
+              <div className={cx('-mx-8 flex min-h-[220px] flex-1 items-center justify-center', i === 0 && 'xl:justify-start xl:px-8')}>
+                {media[i]}
+              </div>
+              <div className="flex flex-col gap-3.5 xl:w-[616px]">
                 <span className={cx(chipClass(true), 'w-fit')}>0{i + 1}</span>
-                <h3 className={cx('transition-[font-size,line-height] duration-500 max-xl:text-[28px] max-xl:leading-[32px]', open ? 't-heading-xl' : 't-heading-l')}>{s.title}</h3>
-                <div className={cx('grid transition-[grid-template-rows,opacity] duration-500', open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 max-xl:grid-rows-[1fr] max-xl:opacity-100')}>
-                  <div className="flex min-h-0 flex-wrap items-end justify-between gap-6 overflow-hidden">
-                    <p className="t-body-l max-w-[380px] text-fg-2">{s.body}</p>
-                    {i === 0 && (
-                      <a href="#demo" className={buttonClass('primary', 'l', 'press')}>
-                        {c.how.demo}
-                        <ArrowRight size={20} strokeWidth={1.75} />
-                      </a>
-                    )}
-                  </div>
+                <h3 className="t-heading-l max-xl:text-[28px] max-xl:leading-[32px] xl:w-[256px]">{s.title}</h3>
+                {/* Always takes its space, so the titles line up and don't jump when a card opens. */}
+                <div
+                  className={cx(
+                    'flex flex-wrap items-end justify-between gap-6 transition-opacity xl:h-[72px] xl:flex-nowrap',
+                    open ? 'opacity-100 duration-500 xl:delay-150' : 'duration-150 xl:pointer-events-none xl:opacity-0'
+                  )}
+                >
+                  <p className="t-body-l text-fg-2 xl:w-[360px]">{s.body}</p>
+                  {i === 0 && (
+                    <a href="#demo" tabIndex={open ? 0 : -1} className={buttonClass('primary', 'l', 'press')}>
+                      {c.how.demo}
+                      <ArrowRight size={20} strokeWidth={1.75} />
+                    </a>
+                  )}
                 </div>
               </div>
             </article>
@@ -324,7 +353,7 @@ const folderOf = (color: FolderColor): Folder => ({ id: 'f', name: '', color, or
 function SaveMedia({ lang, hint }: { lang: Lang; hint: string }) {
   const s = COPY[lang].snippets[0]
   return (
-    <div className="flex w-full max-w-[440px] flex-col items-center gap-5">
+    <div className="flex w-[440px] max-w-[calc(100vw-80px)] shrink-0 flex-col items-center gap-5">
       <div className="w-full rounded-[22px] shadow-popover">
         <PaletteRow index={0} snippet={fakeSnippet({ title: s.title, content: 'lopatinanton.vercel.app', kind: 'link' })} folder={folderOf('peach')} selected />
       </div>
